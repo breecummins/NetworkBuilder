@@ -71,12 +71,22 @@ def checkEdgeAdmissible(outedges,regulation):
                 return False
     return True
 
-def makeNearbyNetwork(starting_network_filename,LEMfile,ranked_genes_file,new_network_filename="network.txt",save2file=False,which_edge_to_add=1,add_new_node=True,draw_network=False,which_node_to_add=1,is_new_node_essential=False):
+def makeNearbyNetwork(starting_network,LEMfile,ranked_genes_file,new_network_filename="network.txt",save2file=False,which_edge_to_add=1,add_new_node=True,draw_network=False,which_node_to_add=1,is_new_node_essential=False,network_is_file=True):
     # if adding a node, two new edges will be added connecting the new node to the graph and which_edge_to_add is ignored
     # if not adding a node, which_node_to_add is ignored and which_edge_to_add is used with existing nodes
-    starting_node_list,starting_graph,starting_regulation,essential = fileparsers.getGraphFromNetworkFile(starting_network_filename)
+
+    # starting_network is either a file name or a string resulting from reading such a file;
+    # construct the graph for this network
+    if network_is_file:
+        starting_node_list,starting_graph,starting_regulation,essential = fileparsers.getGraphFromNetworkFile(network_filename = starting_network)
+    else:
+        starting_node_list,starting_graph,starting_regulation,essential = fileparsers.getGraphFromNetworkFile(networkstr = starting_network)
+
+    # get all of the LEM edges and the ranked genes
     source,target,type_reg,lem_score = fileparsers.parseLEMfile(fname=LEMfile)
     ranked_genes = fileparsers.parseRankedGenes(fname=ranked_genes_file)
+
+    # add a new node or edge
     if add_new_node:
         new_node, best_inedge, best_outedge = addNode(starting_node_list,ranked_genes,source,target,type_reg,which_node_to_add)
         if new_node is None:
@@ -105,6 +115,8 @@ def makeNearbyNetwork(starting_network_filename,LEMfile,ranked_genes_file,new_ne
         else:
             graph[s].append(t)
             regulation[s].append(r)
+
+    # make output
     if draw_network:
         graphoutput.makeGraph(node_list,graph,regulation,new_network_filename.replace(".txt",".pdf"))
     admissible = checkEdgeAdmissible(graph,regulation)

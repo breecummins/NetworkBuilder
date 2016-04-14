@@ -10,21 +10,24 @@ def sort_by_list(X,Y,reverse=False):
 def parseLEMfile(threshold=0,fname='/Users/bcummins/ProjectData/malaria/wrair2015_v2_fpkm-p1_s19_40hr_highest_ranked_genes/wrair2015_v2_fpkm-p1_s19_90tfs_top25_dljtk_lem_score_table.txt'):
     # returns the source, target, and type of regulation sorted by decreasing LEM score (also returned)
     # file format must be:
-    # 1) some number of comment lines denoted by #
-    # 2) following lines begin with TARGET_GENE = TYPE_REG(SOURCE_GENE)
-    # 3) pld.lap score is the first numerical score on each line 
+    # 1) optional comment lines denoted by #
+    # 2) optional line of column headers in which column 2 does not have the header "="
+    # 3) all following lines are data that begin with TARGET_GENE = TYPE_REG(SOURCE_GENE)
+    # 4) pld.lap score is the first numerical score on each data line 
     source=[]
     type_reg=[]
     target=[]
     lem_score=[]
     with open(fname,'r') as f:
         for l in f.readlines():
-            while l[0] == '#':
+            if l[0] == '#':
                 continue
             wordlist=l.split()
-            k=0
-            while not wordlist[k][0].isdigit():
+            if wordlist[1] != "=":
                 continue
+            k=3
+            while not wordlist[k][0].isdigit():
+                k+=1
             lem = float(wordlist[k])
             if lem>threshold:
                 target.append(wordlist[0]) 
@@ -36,14 +39,19 @@ def parseLEMfile(threshold=0,fname='/Users/bcummins/ProjectData/malaria/wrair201
     return source,target,type_reg,lem_score
 
 def parseRankedGenes(fname="/Users/bcummins/ProjectData/yeast/haase-fpkm-p1_yeast_s29_DLxJTK_257TFs.txt"):
-    # file format: comment lines denoted by hash followed by lines beginning with GENE_NAME RANK
+    # file format: 
+    # 1) optional comment lines denoted by hash 
+    # 2) followed by an optional line of column headers with the second column header not beginning with a digit
+    # 3) followed by lines beginning with GENE_NAME RANK
     genes = []
     ranks = []
     with open(fname,'r') as f:
         for l in f.readlines():
-            while l[0] == '#':
+            if l[0] == '#':
                 continue
             wordlist=l.split()
+            if not wordlist[1][0].isdigit():
+                continue
             genes.append(wordlist[0])
             ranks.append(wordlist[1])
     ranked_genes = sort_by_list(ranks,[genes],reverse=False)[1] # reverse=False because we want ascending ranks
@@ -58,28 +66,37 @@ def createNetworkFile(node_list,graph,regulation,essential=None,fname="network.t
     dual=[[(j,reg[outedges.index(node)]) for j,(outedges,reg) in enumerate(zip(graph,regulation)) if node in outedges] for node in range(len(node_list))]
     # auto-generate network file for database
     networkstr = ""  
-    with open(fname,'w') as f:
-        for (name,inedgereg,ess) in zip(node_list,dual,essential):
-            act = " + ".join([node_list[i] for (i,r) in inedgereg if r == 'a'])
-            if act:
-                act = "(" + act  + ")"
-            rep = "".join(["(~"+node_list[i]+")" for (i,r) in inedgereg if r == 'r'])
-            nodestr = name + " : " + act + rep 
-            if ess:
-                nodestr + " : E"
-            nodestr += "\n"
-            if save2file:
-                f.write(nodestr)
-            networkstr += nodestr
+    for (name,inedgereg,ess) in zip(node_list,dual,essential):
+        act = " + ".join([node_list[i] for (i,r) in inedgereg if r == 'a'])
+        if act:
+            act = "(" + act  + ")"
+        rep = "".join(["(~"+node_list[i]+")" for (i,r) in inedgereg if r == 'r'])
+        nodestr = name + " : " + act + rep 
+        if ess:
+            nodestr += " : E"
+        nodestr += "\n"
+        networkstr += nodestr
+    if save2file:
+        with open(fname,'w') as f:
+            f.write(networkstr)
     return networkstr
 
-def getGraphFromNetworkFile(network_filename):
-    # take a network spec file and return a graph
+def getGraphFromNetworkFile(network_filename=None,networkstr=None):
+    # take a network spec file or string and return a graph
+    # either one or the other must be supplied
+    # if both are supplied, the filename will be used instead of the string
+    if network_filename is not None:
+        with open(network_filename,'r') as nf:
+            networkstr = nf.read()
+    if networkstr:
+        eqns = networkstr.split("\n")
+    else:
+        raise ValueError("Empty network string.")
     node_list = []
     inedges = []
     essential = [] #essentialness is inherited
-    with open(network_filename,'r') as nf:
-        for l in nf.readlines():
+    for l in eqns:
+        if l:
             words = l.replace('(',' ').replace(')',' ').replace('+',' ').split()
             if words[-2:] == [':', 'E']:
                 essential.append(True)
