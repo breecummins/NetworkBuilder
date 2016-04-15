@@ -136,21 +136,21 @@ def Concatenate(lists):
 		newList += l
 	return newList
 
-# # Uniqify a list, i.e. turn it into a set
-# def Uniqify(inputList):
-# 	for item1 in inputList:
-# 		tempList = list(inputList)
-# 		tempList.remove(item1)
-# 		for item2 in tempList:
-# 			if item1 == item2:
-# 				inputList.remove(item1)
-# 	return inputList
+ # Uniqify a list, i.e. turn it into a set
+ def Uniqify(inputList):
+ 	for item1 in inputList:
+ 		tempList = list(inputList)
+ 		tempList.remove(item1)
+ 		for item2 in tempList:
+ 			if item1 == item2:
+ 				inputList.remove(item1)
+ 	return inputList
 
 # Sorts the unique components grown into two lists, minList and maxList
 # Inputs: eiList, ts
 # Outputs: minList = list containing all components that are minima, maxList = similar
 def MinMaxLabel(eiList,ts):
-	compList = list(set(Concatenate(eiList))) # used to be Uniqify
+	compList = Uniqify(Concatenate(eiList))  
 	minList = []
 	maxList = []
 	for comp in compList:
@@ -426,11 +426,6 @@ def makeJSONstring(dataFileName,fileType,labels,timeCutOff=-1,n=1,scalingFactor=
 		TSList,TSLabels,timeStepList = ParseColFile(dataFileName)
 	elif fileType == 'row':
 		TSList,TSLabels,timeStepList = ParseRowFile(dataFileName)
-
-	print timeStepList
-	print timeCutOff
-	print timeStepList.index(timeCutOff)
-	sys.exit()
 
 	newTSLabels = labels
 	newTSList = PickNetworkTS(TSList,TSLabels,newTSLabels)
