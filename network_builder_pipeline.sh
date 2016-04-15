@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # network_builder_pipeline.sh
 #   Perform a pattern match analysis of Stable FC nodes
 
