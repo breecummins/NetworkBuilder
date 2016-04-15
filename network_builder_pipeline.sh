@@ -5,7 +5,7 @@
 
 # call from within LEMScores
 
-rm ./inputfiles/networks/* ./inputfiles/POs/* ./databases/*
+rm ./inputfiles/networks/* ./inputfiles/POs/* ./databases/* ./outputfiles/*
 
 STARTINGFILE="datafiles/8D_2016_04_11_malaria40hr_50TF_top25_T0-05_essential.txt"
 LEMFILE="datafiles/wrair2015_v2_fpkm-p1_s19_50tfs_top25_dljtk_lem_score_table.txt"
