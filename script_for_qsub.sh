@@ -40,7 +40,7 @@ NODES=`dsgrn network $1 parameter | sed 's/[^0-9]*\([0-9]*\)[^0-9]*/\1/g'`
 
 # dump inputs and results to json
 OUTPUT = "./outputfiles/results$NUM.json"
-python summaryJSON.py $2 $5 MATCHES STABLEFCS MULTISTABLE NODES OUTPUT
+python summaryJSON.py $2 $5 $MATCHES $STABLEFCS $MULTISTABLE $NODES $OUTPUT
 
 # delete intermediate files
 rm $2 $3 $5 "./outputfiles/StableFCList$NUM.txt" "./outputfiles/MultistabilityList$NUM.txt" "./outputfiles/Matches$NUM.txt"
