@@ -1,5 +1,7 @@
 import json, sys
 
+print sys.argv[:]
+
 networkfile = sys.argv[1]
 partialorderfile = sys.argv[2]
 MATCHES=sys.argv[3]
@@ -13,6 +15,6 @@ with open(networkfile,'r') as nf:
 with open(partialorderfile,'r') as pf:
     postr = pf.read()
 
-output = {"Network" : networkstr, "PartialOrder" : postr, "ParameterCount" : NODES, "StableFCParameterCount" : STABLEFCS, "MultistableParameterCount" : MULTISTABLE, "StableFCMatchesParameterCount" : MATCHES}
+output = {"Network" : networkstr, "PartialOrder" : postr, "ParameterCount" : int(NODES), "StableFCParameterCount" : int(STABLEFCS), "MultistableParameterCount" : int(MULTISTABLE), "StableFCMatchesParameterCount" : int(MATCHES)}
 
-json.dump(output,outputfilename)
+json.dump(output,open(outputfilename,'w'))

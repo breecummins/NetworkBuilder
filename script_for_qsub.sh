@@ -39,7 +39,7 @@ NODES=`dsgrn network $1 parameter | sed 's/[^0-9]*\([0-9]*\)[^0-9]*/\1/g'`
 # note: grep -o "[0-9]*" appears to be buggy on Mac OS X, hence the more complex sed expression instead
 
 # dump inputs and results to json
-OUTPUT="./outputfiles/results$NUM.json"
+OUTPUT="outputfiles/results$NUM.json"
 python summaryJSON.py $2 $5 $MATCHES $STABLEFCS $MULTISTABLE $NODES $OUTPUT
 
 # delete intermediate files
