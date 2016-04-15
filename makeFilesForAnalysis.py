@@ -11,7 +11,7 @@ TIMESERIES  = sys.argv[6]
 TS_TYPE = sys.argv[7]  
 TS_TRUNCATION  = sys.argv[8] 
 
-networks = dp.runNetworkBuilder_OneAndTwo(STARTINGFILE,LEMFILE,RANKEDGENES,NUMNODES,NUMEDGES,is_new_node_essential=True)
+networks = dp.runNetworkBuilder_OneAndTwo(STARTINGFILE,LEMFILE,RANKEDGENES,int(NUMNODES),int(NUMEDGES),is_new_node_essential=True)
 genes = []
 for network in networks:
     genes.append(tuple([eqn.split()[0] for eqn in network]))
