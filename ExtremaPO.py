@@ -427,6 +427,11 @@ def makeJSONstring(dataFileName,fileType,labels,timeCutOff=-1,n=1,scalingFactor=
 	elif fileType == 'row':
 		TSList,TSLabels,timeStepList = ParseRowFile(dataFileName)
 
+	print timeStepList
+	print timeCutOff
+	print timeStepList.index(timeCutOff)
+	sys.exit()
+
 	newTSLabels = labels
 	newTSList = PickNetworkTS(TSList,TSLabels,newTSLabels)
 
@@ -445,4 +450,8 @@ def makeJSONstring(dataFileName,fileType,labels,timeCutOff=-1,n=1,scalingFactor=
 if __name__ == "__main__":	
 	# # Prints the PO's from the conversion to S.H.'s graph class
 	# GraphToDigraph(graph)
-	pass
+	TIMESERIES="datafiles/wrair2015_v2_fpkm-p1_s19.tsv"
+	TS_TYPE="row"  # or 'col', type of time series file format
+	TS_TRUNCATION=42 #cut after 42 time units (NOT after index 42)
+	labels = ["PF3D7_0611200","PF3D7_1139300" ,"PF3D7_1146600","PF3D7_1222600","PF3D7_1317200","PF3D7_1337100","PF3D7_1356900" ,"PF3D7_1408200"]
+	makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=1,step=0.01)
