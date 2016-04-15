@@ -136,8 +136,8 @@ def Concatenate(lists):
 		newList += l
 	return newList
 
- # Uniqify a list, i.e. turn it into a set
- def Uniqify(inputList):
+# Uniqify a list, i.e. turn it into a set
+def Uniqify(inputList):
  	for item1 in inputList:
  		tempList = list(inputList)
  		tempList.remove(item1)
