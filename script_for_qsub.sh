@@ -35,7 +35,7 @@ mpiexec -np 9 $4 $2 $5 ./outputfiles/StableFCList$NUM.txt ./outputfiles/Matches$
 MATCHES=`cut -d " " -f 1 ./outputfiles/Matches$NUM.txt | sort | uniq | wc -w`
 STABLEFCS=`cut -d " " -f 1 ./outputfiles/StableFCList$NUM.txt | sort | uniq | wc -w`
 MULTISTABLE=`cut -d " " -f 1 ./outputfiles/MultistabilityList$NUM.txt | sort | uniq | wc -w`
-NODES=`dsgrn network $1 parameter | sed 's/[^0-9]*\([0-9]*\)[^0-9]*/\1/g'`
+NODES=`dsgrn network $2 parameter | sed 's/[^0-9]*\([0-9]*\)[^0-9]*/\1/g'`
 # note: grep -o "[0-9]*" appears to be buggy on Mac OS X, hence the more complex sed expression instead
 
 # dump inputs and results to json
