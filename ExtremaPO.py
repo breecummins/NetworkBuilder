@@ -1,7 +1,7 @@
 import sys
 import matplotlib.pyplot as plt
 from numpy import matrix,copy
-from graphviz import Digraph
+#from graphviz import Digraph
 import intervalgraph as ig
 import json
 import heapq

@@ -16,7 +16,7 @@ TIMESERIES="datafiles/wrair2015_v2_fpkm-p1_s19.tsv"
 TS_TYPE="row"  # or 'col', type of time series file format
 TS_TRUNCATION=42 #cut after 42 time units (NOT after index 42)
 
-python makeFilesForAnalysis STARTINGFILE LEMFILE RANKEDGENES NUMNODES NUMEDGES TIMESERIES TS_TYPE TS_TRUNCATION
+python ./makeFilesForAnalysis.py STARTINGFILE LEMFILE RANKEDGENES NUMNODES NUMEDGES TIMESERIES TS_TYPE TS_TRUNCATION
 
 DSGRN=/share/data/bcummins/DSGRN
 SIGNATURES=$DSGRN/software/Signatures/bin/Signatures
