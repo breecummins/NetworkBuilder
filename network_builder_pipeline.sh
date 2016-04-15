@@ -23,8 +23,8 @@ SIGNATURES=$DSGRN/software/Signatures/bin/Signatures
 PATTERNMATCH=$DSGRN/software/PatternMatch/bin/PatternMatchDatabase
 
 for i in $( ls inputfiles/networks/*); do
-	NUM = $i | sed -e s/[^0-9]//g;
-	DATABASENAME = "./databases/database$NUM.db";
+	NUM=$i | sed -e s/[^0-9]//g;
+	DATABASENAME="./databases/database$NUM.db";
 	qsub script_for_qsub.sh $SIGNATURES ./inputfiles/networks/$i $DATABASENAME $PATTERNMATCH "./inputfiles/POs/partialorder$NUM.json"
 done
 

@@ -13,7 +13,7 @@
 # arg5 = partial order json file
 
 # get unique identifier
-NUM = $3 | sed -e s/[^0-9]//g
+NUM=$3 | sed -e s/[^0-9]//g
 
 # make database
 mpiexec --mca mpi_preconnect_mpi 1 -np $NSLOTS -x LD_LIBRARY_PATH $1 $2 $3
@@ -39,7 +39,7 @@ NODES=`dsgrn network $1 parameter | sed 's/[^0-9]*\([0-9]*\)[^0-9]*/\1/g'`
 # note: grep -o "[0-9]*" appears to be buggy on Mac OS X, hence the more complex sed expression instead
 
 # dump inputs and results to json
-OUTPUT = "./outputfiles/results$NUM.json"
+OUTPUT="./outputfiles/results$NUM.json"
 python summaryJSON.py $2 $5 $MATCHES $STABLEFCS $MULTISTABLE $NODES $OUTPUT
 
 # delete intermediate files
