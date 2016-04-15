@@ -4,7 +4,7 @@ import time
 def addTopEdges(starting_network_filename,LEMfile,ranked_genes_file,numedges=10):
     networkstr_edges = []
     for rank in range(len(numedges)):
-        networkstr = networkbuilder.makeNearbyNetwork(starting_network_filename,LEMfile,ranked_genes_file,save2file = False, which_edge_to_add=rank+1,add_new_node=False,draw_network=False,network_is_file=True)
+        networkstr = networkbuilder.makeNearbyNetwork(starting_network_filename,LEMfile,ranked_genes_file,save2file = False, which_edge_to_add=rank+1,add_new_node=False,network_is_file=True)
         if not networkstr:
             print "Skipped ranked edge {}".format(count)
         else:
@@ -14,7 +14,7 @@ def addTopEdges(starting_network_filename,LEMfile,ranked_genes_file,numedges=10)
 def addTopNodes(starting_network_filename,LEMfile,ranked_genes_file,numnodes=10,is_new_node_essential=True):
     networkstr_nodes = []
     for rank in range(len(numnodes)):
-        networkstr = networkbuilder.makeNearbyNetwork(starting_network_filename,LEMfile,ranked_genes_file, save2file=False,add_new_node=True,draw_network=False,which_node_to_add=rank+1,is_new_node_essential=is_new_node_essential,network_is_file=True)
+        networkstr = networkbuilder.makeNearbyNetwork(starting_network_filename,LEMfile,ranked_genes_file, save2file=False,add_new_node=True,which_node_to_add=rank+1,is_new_node_essential=is_new_node_essential,network_is_file=True)
         if not networkstr:
             print "Skipped ranked node {}".format(count1)
         else:
@@ -25,7 +25,7 @@ def addOneAndTwoTopEdges(starting_network_filename,LEMfile,ranked_genes_file,num
     count1 = 1
     networkstr_edges = []
     while count1 < numedges+1:
-        networkstr = networkbuilder.makeNearbyNetwork(starting_network_filename,LEMfile,ranked_genes_file,save2file = False, which_edge_to_add=count1,add_new_node=False,draw_network=False,network_is_file=True)
+        networkstr = networkbuilder.makeNearbyNetwork(starting_network_filename,LEMfile,ranked_genes_file,save2file = False, which_edge_to_add=count1,add_new_node=False,network_is_file=True)
         if not networkstr:
             print "Skipped ranked edge {}".format(count1)
         else:
@@ -33,7 +33,7 @@ def addOneAndTwoTopEdges(starting_network_filename,LEMfile,ranked_genes_file,num
             nstrtemp = []
             count2 = count1+1
             while count2 < numedges+1:
-                networkstr = networkbuilder.makeNearbyNetwork(networkstr_edges[-1],LEMfile,ranked_genes_file,save2file=False,which_edge_to_add=count2,add_new_node=False,draw_network=False,network_is_file=False)
+                networkstr = networkbuilder.makeNearbyNetwork(networkstr_edges[-1],LEMfile,ranked_genes_file,save2file=False,which_edge_to_add=count2,add_new_node=False,network_is_file=False)
                 if not networkstr:
                     print "Skipped ranked edges {} and {}".format(count1, count2)
                 else:
@@ -47,7 +47,7 @@ def addOneAndTwoTopNodes(starting_network_filename,LEMfile,ranked_genes_file,num
     count1 = 1
     networkstr_nodes = []
     while count1 < numnodes+1:
-        networkstr = networkbuilder.makeNearbyNetwork(starting_network_filename,LEMfile,ranked_genes_file, save2file=False,add_new_node=True,draw_network=False,which_node_to_add=count1,is_new_node_essential=is_new_node_essential,network_is_file=True)
+        networkstr = networkbuilder.makeNearbyNetwork(starting_network_filename,LEMfile,ranked_genes_file, save2file=False,add_new_node=True,which_node_to_add=count1,is_new_node_essential=is_new_node_essential,network_is_file=True)
         if not networkstr:
             print "Skipped ranked node {}".format(count1)
         else:
@@ -55,7 +55,7 @@ def addOneAndTwoTopNodes(starting_network_filename,LEMfile,ranked_genes_file,num
             nstrtemp = []
             count2 = count1+1
             while count2 < numnodes+1:
-                networkstr = networkbuilder.makeNearbyNetwork(networkstr_nodes[-1],LEMfile,ranked_genes_file,save2file=False, add_new_node=True,draw_network=False,which_node_to_add=count2,is_new_node_essential=is_new_node_essential,network_is_file=False)
+                networkstr = networkbuilder.makeNearbyNetwork(networkstr_nodes[-1],LEMfile,ranked_genes_file,save2file=False, add_new_node=True,which_node_to_add=count2,is_new_node_essential=is_new_node_essential,network_is_file=False)
                 if not networkstr:
                     print "Skipped ranked nodes {} and {}".format(count1, count2)
                 else:
@@ -69,7 +69,7 @@ def addTopNodesAndEdges(starting_network_filename,LEMfile,ranked_genes_file,numn
     count1 = 1
     networkstr_nodeandedge = []
     while count1 < numnodes+1:
-        networkstr = networkbuilder.makeNearbyNetwork(starting_network_filename,LEMfile,ranked_genes_file,save2file=False, add_new_node=True,draw_network=False,which_node_to_add=count1,is_new_node_essential=is_new_node_essential,network_is_file=True)
+        networkstr = networkbuilder.makeNearbyNetwork(starting_network_filename,LEMfile,ranked_genes_file,save2file=False, add_new_node=True,which_node_to_add=count1,is_new_node_essential=is_new_node_essential,network_is_file=True)
         if not networkstr:
             print "Skipped ranked node {}".format(count1)
         else:
@@ -77,7 +77,7 @@ def addTopNodesAndEdges(starting_network_filename,LEMfile,ranked_genes_file,numn
             nstrtemp = []
             count2 = 1
             while count2 < numedges+1:
-                networkstr = networkbuilder.makeNearbyNetwork(networkstr_nodeandedge[-1],LEMfile,ranked_genes_file,save2file=False, which_edge_to_add=count2,add_new_node=False,draw_network=False,network_is_file=False)
+                networkstr = networkbuilder.makeNearbyNetwork(networkstr_nodeandedge[-1],LEMfile,ranked_genes_file,save2file=False, which_edge_to_add=count2,add_new_node=False,network_is_file=False)
                 if not networkstr:
                     print "Skipped ranked node {} and edge {}".format(count1, count2)
                 else:

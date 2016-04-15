@@ -1,4 +1,4 @@
-import fileparsers, graphoutput
+import fileparsers
 
 def addNode(node_list,ranked_genes,source,target,type_reg,which_node_to_add = 1):
     count = 0
@@ -71,7 +71,7 @@ def checkEdgeAdmissible(outedges,regulation):
                 return False
     return True
 
-def makeNearbyNetwork(starting_network,LEMfile,ranked_genes_file,new_network_filename="network.txt",save2file=False,which_edge_to_add=1,add_new_node=True,draw_network=False,which_node_to_add=1,is_new_node_essential=False,network_is_file=True):
+def makeNearbyNetwork(starting_network,LEMfile,ranked_genes_file,new_network_filename="network.txt",save2file=False,which_edge_to_add=1,add_new_node=True,which_node_to_add=1,is_new_node_essential=False,network_is_file=True):
     # if adding a node, two new edges will be added connecting the new node to the graph and which_edge_to_add is ignored
     # if not adding a node, which_node_to_add is ignored and which_edge_to_add is used with existing nodes
 
@@ -115,10 +115,9 @@ def makeNearbyNetwork(starting_network,LEMfile,ranked_genes_file,new_network_fil
         else:
             graph[s].append(t)
             regulation[s].append(r)
-
-    # make output
-    if draw_network:
-        graphoutput.makeGraph(node_list,graph,regulation,new_network_filename.replace(".txt",".pdf"))
+    # # make output
+    # if draw_network:
+    #     graphoutput.makeGraph(node_list,graph,regulation,new_network_filename.replace(".txt",".pdf"))
     admissible = checkEdgeAdmissible(graph,regulation)
     if admissible:
         networkstr = fileparsers.createNetworkFile(node_list,graph,regulation,essential,new_network_filename,save2file= save2file)
