@@ -14,7 +14,8 @@ TS_TRUNCATION  = sys.argv[8]
 networks = dp.runNetworkBuilder_OneAndTwo(STARTINGFILE,LEMFILE,RANKEDGENES,int(NUMNODES),int(NUMEDGES),is_new_node_essential=True)
 genes = []
 for network in networks:
-    genes.append(tuple([eqn.split()[0] for eqn in network]))
+    if network:
+        genes.append(tuple([eqn.split()[0] for eqn in network]))
 uniquegenes = list(set(genes))
 uniquePOs = []
 for labels in uniquegenes:
