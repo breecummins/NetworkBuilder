@@ -438,6 +438,8 @@ def makeJSONstring(dataFileName,fileType,labels,timeCutOff=-1,n=1,scalingFactor=
 	if scalingFactor > 0 and scalingFactor < 1:
 		maxEps = int(scalingFactor*maxEps)
 	eventCompList = PullEventComps(sumList,maxEps,step,n)
+	print eventCompList
+	print "\n"
 	PO = BuildPO(eventCompList,maxEps,step,n)
 	graph = POToGraph(PO,newTSLabels,n)
 	return ConvertToJSON(graph,sumList,newTSLabels)
@@ -450,3 +452,4 @@ if __name__ == "__main__":
 	TS_TRUNCATION=42 #cut after 42 time units (NOT after index 42)
 	labels = ["PF3D7_0611200","PF3D7_1139300" ,"PF3D7_1146600","PF3D7_1222600","PF3D7_1317200","PF3D7_1337100","PF3D7_1356900" ,"PF3D7_1408200"]
 	makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=1,step=0.01)
+	makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.1,step=0.01)
