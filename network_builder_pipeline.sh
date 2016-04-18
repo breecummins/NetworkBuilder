@@ -18,14 +18,14 @@ SCALING_FACTOR=0.01   # between 0 and 1; 0 = most restrictive partial order; 1 =
 
 python ./makeFilesForAnalysis.py $STARTINGFILE $LEMFILE $RANKEDGENES $NUMNODES $NUMEDGES $TIMESERIES $TS_TYPE $TS_TRUNCATION $SCALING_FACTOR
 
-# DSGRN=/share/data/bcummins/DSGRN
-# SIGNATURES=$DSGRN/software/Signatures/bin/Signatures
-# PATTERNMATCH=$DSGRN/software/PatternMatch/bin/PatternMatchDatabase
+DSGRN=/share/data/bcummins/DSGRN
+SIGNATURES=$DSGRN/software/Signatures/bin/Signatures
+PATTERNMATCH=$DSGRN/software/PatternMatch/bin/PatternMatchDatabase
 
-# for i in $( ls inputfiles/networks/*); do
-# 	NUM=$(echo $i | sed -e s/[^0-9]//g);
-# 	DATABASENAME="./databases/database$NUM.db";
-# 	qsub script_for_qsub.sh $SIGNATURES $i $DATABASENAME $PATTERNMATCH "./inputfiles/POs/partialorder$NUM.json"
-# done
+for i in $( ls inputfiles/networks/*); do
+	NUM=$(echo $i | sed -e s/[^0-9]//g);
+	DATABASENAME="./databases/database$NUM.db";
+	qsub script_for_qsub.sh $SIGNATURES $i $DATABASENAME $PATTERNMATCH "./inputfiles/POs/partialorder$NUM.json"
+done
 
 

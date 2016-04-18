@@ -1,6 +1,6 @@
 import ExtremaPO as EPO
 import deterministicperturbations as dp
-import sys
+import sys,json
 
 STARTINGFILE = sys.argv[1] 
 LEMFILE = sys.argv[2] 
@@ -11,8 +11,6 @@ TIMESERIES  = sys.argv[6]
 TS_TYPE = sys.argv[7]  
 TS_TRUNCATION  = sys.argv[8] 
 SCALING_FACTOR = sys.argv[9]
-
-print SCALING_FACTOR
 
 networks = dp.runNetworkBuilder_OneAndTwo(STARTINGFILE,LEMFILE,RANKEDGENES,int(NUMNODES),int(NUMEDGES),is_new_node_essential=True)
 genes = []
@@ -26,14 +24,14 @@ for network in networks:
 uniquegenes = list(set(genes))
 uniquePOs = []
 for labels in uniquegenes:
-    uniquePOs.append(EPO.makeJSONstring(TIMESERIES,TS_TYPE,labels,float(TS_TRUNCATION),n=1,scalingFactor=SCALING_FACTOR,step=0.01))
-for po in uniquePOs:
-    print po
+    uniquePOs.append(EPO.makeJSONstring(TIMESERIES,TS_TYPE,labels,float(TS_TRUNCATION),n=1,scalingFactor=float(SCALING_FACTOR),step=0.01))
+# for po in uniquePOs:
+#     print json.loads(po)["poset"]
 matchingPOs = [uniquePOs[uniquegenes.index(g)] for g in genes]
 
-for k,(net,po) in enumerate(zip(networks,matchingPOs)):
-    with open('inputfiles/networks/network{}.txt'.format(k),'w') as nf:
-        nf.write(net)
-    with open('inputfiles/POs/partialorder{}.json'.format(k),'w') as pf:
-        pf.write(po)
+# for k,(net,po) in enumerate(zip(networks,matchingPOs)):
+#     with open('inputfiles/networks/network{}.txt'.format(k),'w') as nf:
+#         nf.write(net)
+#     with open('inputfiles/POs/partialorder{}.json'.format(k),'w') as pf:
+#         pf.write(po)
 
