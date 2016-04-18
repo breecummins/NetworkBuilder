@@ -10,6 +10,7 @@ NUMEDGES = sys.argv[5]
 TIMESERIES  = sys.argv[6]  
 TS_TYPE = sys.argv[7]  
 TS_TRUNCATION  = sys.argv[8] 
+SCALING_FACTOR = sys.argv[9]
 
 networks = dp.runNetworkBuilder_OneAndTwo(STARTINGFILE,LEMFILE,RANKEDGENES,int(NUMNODES),int(NUMEDGES),is_new_node_essential=True)
 genes = []
@@ -23,7 +24,7 @@ for network in networks:
 uniquegenes = list(set(genes))
 uniquePOs = []
 for labels in uniquegenes:
-    uniquePOs.append(EPO.makeJSONstring(TIMESERIES,TS_TYPE,labels,float(TS_TRUNCATION),n=1,scalingFactor=0.1,step=0.01))
+    uniquePOs.append(EPO.makeJSONstring(TIMESERIES,TS_TYPE,labels,float(TS_TRUNCATION),n=1,scalingFactor=SCALING_FACTOR,step=0.01))
 matchingPOs = [uniquePOs[uniquegenes.index(g)] for g in genes]
 
 for k,(net,po) in enumerate(zip(networks,matchingPOs)):
