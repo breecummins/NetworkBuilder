@@ -1,15 +1,15 @@
 #!/bin/bash
 
-SAVEFILE=$1
-OUTPUTDIR=$2
+# SAVEFILE=$1 #json
+# OUTPUTDIR=$2 #where all the results files are
 
-echo "[" >> $SAVEFILE
+echo "[" >> $1
 
-for i in $(ls $OUTPUTDIR/*); do
-	cat $i >> $SAVEFILE;
-	echo ',' >> $SAVEFILE;
+for i in $(ls $2/*); do
+	cat $i >> $1;
+	echo ',' >> $1;
 done
 
-echo "]" >> $SAVEFILE
+echo "]" >> $1
 
 # now delete stuff in OUTPUTDIR
