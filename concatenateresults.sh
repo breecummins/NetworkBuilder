@@ -1,12 +1,15 @@
 #!/bin/bash
 
-FILENAME=$1
+SAVEFILE=$1
+OUTPUTDIR=$2
 
-echo "[" >> $FILENAME
+echo "[" >> $SAVEFILE
 
-for i in $(ls outputfiles/results*.txt); do
-	cat $i >> $FILENAME;
-	echo ',' >> $FILENAME;
+for i in $(ls $OUTPUTDIR/*); do
+	cat $i >> $SAVEFILE;
+	echo ',' >> $SAVEFILE;
 done
 
-echo "]" >> $FILENAME
+echo "]" >> $SAVEFILE
+
+# now delete stuff in OUTPUTDIR
