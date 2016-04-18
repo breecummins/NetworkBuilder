@@ -458,7 +458,11 @@ if __name__ == "__main__":
 	# labels = ["PF3D7_0611200","PF3D7_1139300" ,"PF3D7_1146600","PF3D7_1222600","PF3D7_1317200","PF3D7_1337100","PF3D7_1356900" ,"PF3D7_1408200"]
 	labels = ["PF3D7_0611200","PF3D7_1139300","PF3D7_1337100","PF3D7_0802100","PF3D7_0317200","PF3D7_0934400","PF3D7_1308100","PF3D7_0525000","PF3D7_1473900","PF3D7_1205500","PF3D7_1143100"]
 	fnamestart = "partialorder_11D_malariaDuke_"
-	json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=1,step=0.01), open(fnamestart+'1-0.json','w'))
-	json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.5,step=0.01), open(fnamestart+'0-5.json','w'))
-	json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.1,step=0.01), open(fnamestart+'0-1.json','w'))
-	json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.0,step=0.01), open(fnamestart+'0-0.json','w'))
+	with open(fnamestart+'1-0.json','w') as f:
+		f.write(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=1,step=0.01) )
+	with open(fnamestart+'0-5.json','w') as f:
+		f.write(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.5,step=0.01) )
+	with open(fnamestart+'0-1.json','w') as f:
+		f.write(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.1,step=0.01) )
+	with open(fnamestart+'0-0.json','w') as f:
+		f.write(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.0,step=0.01) )
