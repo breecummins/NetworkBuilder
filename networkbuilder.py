@@ -91,6 +91,7 @@ def makeNearbyNetwork(starting_network,LEMfile,ranked_genes_file,new_network_fil
         new_node, best_inedge, best_outedge = addNode(starting_node_list,ranked_genes,source,target,type_reg,which_node_to_add)
         if new_node is None:
             raise ValueError("No new node to add.")
+        print new_node, best_inedge, best_outedge
         # best_*edge = (source, target, regulation)
         node_list = starting_node_list + [new_node]
         graph = starting_graph + [[]]

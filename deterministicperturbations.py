@@ -64,10 +64,10 @@ def addTopNodesAndEdges(starting_network_filename,LEMfile,ranked_genes_file,numn
         if not networkstr:
             print "Skipped ranked node {}".format(rank1)
         else:
-            networkstr_nodeandedge.append(networkstr)
+            startstr = networkstr
             nstrtemp = []
             for rank2 in range(rank1+1,numedges+1):
-                networkstr = networkbuilder.makeNearbyNetwork(networkstr_nodeandedge[-1],LEMfile,ranked_genes_file,save2file=False, which_edge_to_add=rank2,add_new_node=False,network_is_file=False)
+                networkstr = networkbuilder.makeNearbyNetwork(startstr,LEMfile,ranked_genes_file,save2file=False, which_edge_to_add=rank2,add_new_node=False,network_is_file=False)
                 if not networkstr:
                     print "Skipped ranked node {} and edge {}".format(rank1, rank2)
                 else:
