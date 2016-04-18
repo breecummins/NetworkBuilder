@@ -11,6 +11,7 @@ TIMESERIES  = sys.argv[6]
 TS_TYPE = sys.argv[7]  
 TS_TRUNCATION  = sys.argv[8] 
 SCALING_FACTOR = sys.argv[9]
+INPUTDIR = sys.argv[10]
 
 with open(STARTINGFILE,'r') as sf:
     startingnetwork = sf.read()
@@ -33,8 +34,8 @@ for labels in uniquegenes:
 matchingPOs = [uniquePOs[uniquegenes.index(g)] for g in genes]
 
 for k,(net,po) in enumerate(zip(networks,matchingPOs)):
-    with open('inputfiles/networks/network{}.txt'.format(k),'w') as nf:
+    with open('INPUTDIR/networks/network{}.txt'.format(k),'w') as nf:
         nf.write(net)
-    with open('inputfiles/POs/partialorder{}.json'.format(k),'w') as pf:
+    with open('INPUTDIR/POs/partialorder{}.json'.format(k),'w') as pf:
         pf.write(po)
 

@@ -8,7 +8,7 @@ INPUTDIR=./inputfiles$DATETIME
 DATABASEDIR=./databases$DATETIME
 OUTPUTDIR=./outputfiles$DATETIME
 
-mkdir -p $INPUTS/networks/ $INPUTS/POs/ $DATABASEDIR/ $OUTPUTDIR/
+mkdir -p $INPUTDIR/networks/ $INPUTDIR/POs/ $DATABASEDIR/ $OUTPUTDIR/
 
 STARTINGFILE="datafiles/8D_2016_04_11_malaria40hr_50TF_top25_T0-05_essential.txt"
 LEMFILE="datafiles/wrair2015_v2_fpkm-p1_s19_50tfs_top25_dljtk_lem_score_table.txt"
@@ -20,13 +20,13 @@ TS_TYPE="row"  # or 'col', type of time series file format
 TS_TRUNCATION=42 #cut after 42 time units (NOT after index 42)
 SCALING_FACTOR=0.0   # between 0 and 1; 0 = most restrictive partial order; 1 = least restrictive
 
-python ./makeFilesForAnalysis.py $STARTINGFILE $LEMFILE $RANKEDGENES $NUMNODES $NUMEDGES $TIMESERIES $TS_TYPE $TS_TRUNCATION $SCALING_FACTOR
+python ./makeFilesForAnalysis.py $STARTINGFILE $LEMFILE $RANKEDGENES $NUMNODES $NUMEDGES $TIMESERIES $TS_TYPE $TS_TRUNCATION $SCALING_FACTOR $INPUTDIR
 
 DSGRN=/share/data/bcummins/DSGRN
 SIGNATURES=$DSGRN/software/Signatures/bin/Signatures
 PATTERNMATCH=$DSGRN/software/PatternMatch/bin/PatternMatchDatabase
 
-for i in $( ls inputfiles/networks/*); do
+for i in $( ls $INPUTDIR/networks/*); do
 	NUM=$(echo $i | sed -e s/[^0-9]//g);
 	DATABASENAME="$DATABASEDIR/database$NUM.db";
 	RESULTSFILE="$OUTPUTDIR/results$NUM.json"
