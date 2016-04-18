@@ -85,6 +85,7 @@ def makeNearbyNetwork(starting_network,LEMfile,ranked_genes_file,new_network_fil
     # get all of the LEM edges and the ranked genes
     source,target,type_reg,lem_score = fileparsers.parseLEMfile(fname=LEMfile)
     ranked_genes = fileparsers.parseRankedGenes(fname=ranked_genes_file)
+    print ranked_genes
 
     # add a new node or edge
     if add_new_node:
