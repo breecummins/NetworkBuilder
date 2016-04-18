@@ -3,13 +3,13 @@
 SAVEFILE=$1 #json
 OUTPUTDIR=$2 #where all the results files are
 
-echo "[" >> $SAVEFILE
+printf "[" >> $SAVEFILE
 
 for i in $(ls $OUTPUTDIR/*); do
 	cat $i >> $SAVEFILE;
-	echo ',' >> $SAVEFILE;
+	printf ',' >> $SAVEFILE;
 done
 
-echo "]" >> $SAVEFILE
+printf '%s\n' '$' 's/.$/]/' wq | ex $SAVEFILE
 
 # now delete stuff in OUTPUTDIR
