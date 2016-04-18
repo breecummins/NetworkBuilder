@@ -43,8 +43,6 @@ def addOneAndTwoTopNodes(starting_network_filename,LEMfile,ranked_genes_file,num
     networkstr_nodes = []
     for rank1 in range(1,numnodes+1):
         networkstr = networkbuilder.makeNearbyNetwork(starting_network_filename,LEMfile,ranked_genes_file, save2file=False,add_new_node=True,which_node_to_add=rank1,is_new_node_essential=is_new_node_essential,network_is_file=True)
-        print networkstr
-        print "\n"
         if not networkstr:
             print "Skipped ranked node {}".format(rank1)
         else:
@@ -55,8 +53,6 @@ def addOneAndTwoTopNodes(starting_network_filename,LEMfile,ranked_genes_file,num
                 if not networkstr:
                     print "Skipped ranked nodes {} and {}".format(rank1, rank2)
                 else:
-                    print nstrtemp
-                    print "\n"
                     nstrtemp.append(networkstr)
             networkstr_nodes += nstrtemp
     return networkstr_nodes

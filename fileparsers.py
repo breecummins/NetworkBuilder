@@ -53,7 +53,7 @@ def parseRankedGenes(fname="/Users/bcummins/ProjectData/yeast/haase-fpkm-p1_yeas
             if not wordlist[1][0].isdigit():
                 continue
             genes.append(wordlist[0])
-            ranks.append(wordlist[1])
+            ranks.append(int(wordlist[1]))
     ranked_genes = sort_by_list(ranks,[genes],reverse=False)[1] # reverse=False because we want ascending ranks
     return ranked_genes
 
@@ -129,3 +129,5 @@ def generateMasterList(fname='/Users/bcummins/ProjectData/malaria/wrair2015_pfal
         timeseries.append([float(w) for w in wordlist[22*k+1:22*(k+1)]])
     return genelist, timeseries
 
+if __name__ == '__main__':
+    parseRankedGenes("datafiles/wrair-fpkm-p1_malaria_s19_DLxJTK_50putativeTFs.txt")
