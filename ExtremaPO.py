@@ -443,8 +443,8 @@ def makeJSONstring(dataFileName,fileType,labels,timeCutOff=-1,n=1,scalingFactor=
 	if scalingFactor >= 0 and scalingFactor < 1:
 		maxEps = int(scalingFactor*maxEps)
 	eventCompList = PullEventComps(sumList,maxEps,step,n)
-	print eventCompList
-	print "\n"
+	# print eventCompList
+	# print "\n"
 	PO = BuildPO(eventCompList,step,n)
 	graph = POToGraph(PO,newTSLabels,n)
 	return ConvertToJSON(graph,sumList,newTSLabels)
