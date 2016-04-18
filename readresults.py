@@ -7,7 +7,7 @@ def makestats(fname='results.json'):
         pc = n["ParameterCount"]
         fcpc = n["StableFCParameterCount"]
         fcpm = n["StableFCMatchesParameterCount"]
-        print str(pc) + '/' + str(fcpc) + '/' + str(fcpm) + '/{0:.2g}'.format(float(fcpm)/fcpc * 100)
+        print str(pc) + '/' + str(fcpc) + '/' + str(fcpm) + '/{0:.2f}'.format((float(fcpm)/fcpc) * 100)
 
 if __name__=='__main__':
     makestats(sys.argv[1]) 
