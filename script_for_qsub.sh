@@ -13,9 +13,10 @@
 # arg5 = partial order json file
 # arg6 = output directory
 # arg7 = results file
+# arg8 = results number
 
 # get unique identifier
-NUM=$(echo $3 | sed -e s/[^0-9]//g)
+NUM=$8
 
 # make database
 mpiexec --mca mpi_preconnect_mpi 1 -np $NSLOTS -x LD_LIBRARY_PATH $1 $2 $3
