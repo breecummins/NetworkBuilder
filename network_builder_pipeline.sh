@@ -3,8 +3,7 @@
 # network_builder_pipeline.sh
 #   Perform a pattern match analysis of Stable FC nodes
 
-# call from within LEMScores
-
+mkdir -p ./inputfiles/networks/ ./inputfiles/POs/ ./databases/ ./outputfiles/
 rm ./inputfiles/networks/* ./inputfiles/POs/* ./databases/* ./outputfiles/*
 
 STARTINGFILE="datafiles/8D_2016_04_11_malaria40hr_50TF_top25_T0-05_essential.txt"
@@ -18,6 +17,8 @@ TS_TRUNCATION=42 #cut after 42 time units (NOT after index 42)
 SCALING_FACTOR=0.05   # between 0 and 1; 0 = most restrictive partial order; 1 = least restrictive
 
 python ./makeFilesForAnalysis.py $STARTINGFILE $LEMFILE $RANKEDGENES $NUMNODES $NUMEDGES $TIMESERIES $TS_TYPE $TS_TRUNCATION $SCALING_FACTOR
+
+exit 0
 
 DSGRN=/share/data/bcummins/DSGRN
 SIGNATURES=$DSGRN/software/Signatures/bin/Signatures
