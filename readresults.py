@@ -10,4 +10,4 @@ def makestats(fname='results.json'):
         print pc + '/' + fcpc + '/' + fcpm + '/{0:.2g}'.format(float(fcpm)/fcpc * 100)
 
 if __name__=='__main__':
-    makestats(sys.argv(1)) 
+    makestats(sys.argv[1]) 

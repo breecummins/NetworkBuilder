@@ -2,6 +2,9 @@
 
 SAVEFILE=$1 #json
 OUTPUTDIR=$2 #where all the results files are
+INPUTDIR=$3 #temp network files and partial orders
+DATABASEDIR=$4 #temp databases
+
 
 printf "[" > $SAVEFILE #write to file
 
@@ -12,4 +15,4 @@ done
 
 printf '%s\n' '$' 's/.$/]/' wq | ex $SAVEFILE #replace last comma with closing bracket
 
-# now delete stuff in OUTPUTDIR
+rm -r $OUTPUTDIR $INPUTDIR $DATABASEDIR
