@@ -18,7 +18,7 @@ NUMEDGES=10 # add edges of rank 1 to n singly and in pairs
 TIMESERIES="datafiles/wrair2015_v2_fpkm-p1_s19.tsv"
 TS_TYPE="row"  # or 'col', type of time series file format
 TS_TRUNCATION=42 #cut after 42 time units (NOT after index 42)
-SCALING_FACTOR=0.0   # between 0 and 1; 0 = most restrictive partial order; 1 = least restrictive
+SCALING_FACTOR=0.05   # between 0 and 1; 0 = most restrictive partial order; 1 = least restrictive
 
 python ./makeFilesForAnalysis.py $STARTINGFILE $LEMFILE $RANKEDGENES $NUMNODES $NUMEDGES $TIMESERIES $TS_TYPE $TS_TRUNCATION $SCALING_FACTOR $INPUTDIR
 

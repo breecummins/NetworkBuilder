@@ -443,8 +443,8 @@ def makeJSONstring(dataFileName,fileType,labels,timeCutOff=-1,n=1,scalingFactor=
 	if scalingFactor >= 0 and scalingFactor < 1:
 		maxEps = int(scalingFactor*maxEps)
 	eventCompList = PullEventComps(sumList,maxEps,step,n)
-	# print eventCompList
-	# print "\n"
+	print eventCompList
+	print "\n"
 	PO = BuildPO(eventCompList,step,n)
 	graph = POToGraph(PO,newTSLabels,n)
 	return ConvertToJSON(graph,sumList,newTSLabels)
@@ -458,11 +458,15 @@ if __name__ == "__main__":
 	# labels = ["PF3D7_0611200","PF3D7_1139300" ,"PF3D7_1146600","PF3D7_1222600","PF3D7_1317200","PF3D7_1337100","PF3D7_1356900" ,"PF3D7_1408200"]
 	labels = ["PF3D7_0611200","PF3D7_1139300","PF3D7_1337100","PF3D7_0802100","PF3D7_0317200","PF3D7_0934400","PF3D7_1308100","PF3D7_0525000","PF3D7_1473900","PF3D7_1205500","PF3D7_1143100"]
 	fnamestart = "partialorder_11D_malariaDuke_"
-	with open(fnamestart+'1-0.json','w') as f:
-		f.write(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=1,step=0.01) )
-	with open(fnamestart+'0-5.json','w') as f:
-		f.write(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.5,step=0.01) )
+	# with open(fnamestart+'1-0.json','w') as f:
+	# 	f.write(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=1,step=0.01) )
+	# with open(fnamestart+'0-5.json','w') as f:
+	# 	f.write(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.5,step=0.01) )
 	with open(fnamestart+'0-1.json','w') as f:
 		f.write(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.1,step=0.01) )
+	with open(fnamestart+'0-05.json','w') as f:
+		f.write(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.05,step=0.01) )
+	with open(fnamestart+'0-04.json','w') as f:
+		f.write(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.04,step=0.01) )
 	with open(fnamestart+'0-0.json','w') as f:
 		f.write(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.0,step=0.01) )
