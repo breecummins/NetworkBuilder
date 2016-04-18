@@ -29,9 +29,9 @@ for labels in uniquegenes:
 #     print json.loads(po)["poset"]
 matchingPOs = [uniquePOs[uniquegenes.index(g)] for g in genes]
 
-# for k,(net,po) in enumerate(zip(networks,matchingPOs)):
-#     with open('inputfiles/networks/network{}.txt'.format(k),'w') as nf:
-#         nf.write(net)
-#     with open('inputfiles/POs/partialorder{}.json'.format(k),'w') as pf:
-#         pf.write(po)
+for k,(net,po) in enumerate(zip(networks,matchingPOs)):
+    with open('inputfiles/networks/network{}.txt'.format(k),'w') as nf:
+        nf.write(net)
+    with open('inputfiles/POs/partialorder{}.json'.format(k),'w') as pf:
+        pf.write(po)
 
