@@ -288,7 +288,7 @@ def PullEventComps(sumList,maxEps,step,n):
 # Build partial order list indexed by epsilon. Each PO is a list indexed by 1st ts highest min, 1st ts highest max, 
 # 1st ts second highest min, 1st ts second highst max, ..., last ts nth highest min, last ts nth highest max
 # Each entry is a list of all mins/maxes that occur before the given min/max. 
-def BuildPO(eventCompList,maxEps,step,n):
+def BuildPO(eventCompList,step,n):
 	PO = []
 	for ts in range(0,len(eventCompList)):
 		for event in range(0,2*n):
@@ -420,8 +420,12 @@ def TruncateTS(newTSList,timeStepList,timeCutOff):
 
 # The arguments are dataFileName, fileType = 'row' or 'col', labels = list of time series labels,
 # n = number of mins/maxes to pull, timeCutOff = ignore data after this time ( = -1 if no cutOff), 
-# scalingFactor = a scaling factor of maxEps (Must be in (0,1]), step (default to 0.01)
+# scalingFactor = a scaling factor of maxEps (Must be in [0,1]), step (default to 0.01)
 def makeJSONstring(dataFileName,fileType,labels,timeCutOff=-1,n=1,scalingFactor=1,step=0.01):
+	if step <=0:
+		print "Changing step size to 0.01."
+		step = 0.01
+
 	if fileType == 'col':
 		TSList,TSLabels,timeStepList = ParseColFile(dataFileName)
 	elif fileType == 'row':
@@ -434,13 +438,14 @@ def makeJSONstring(dataFileName,fileType,labels,timeCutOff=-1,n=1,scalingFactor=
 		newTSList = TruncateTS(newTSList,timeStepList,timeCutOff)
 
 	sumList = ProcessTS(newTSList,n,step)
+
 	maxEps = FindMaxEps(sumList)
-	if scalingFactor > 0 and scalingFactor < 1:
+	if scalingFactor >= 0 and scalingFactor < 1:
 		maxEps = int(scalingFactor*maxEps)
 	eventCompList = PullEventComps(sumList,maxEps,step,n)
 	# print eventCompList
 	# print "\n"
-	PO = BuildPO(eventCompList,maxEps,step,n)
+	PO = BuildPO(eventCompList,step,n)
 	graph = POToGraph(PO,newTSLabels,n)
 	return ConvertToJSON(graph,sumList,newTSLabels)
 
@@ -450,6 +455,10 @@ if __name__ == "__main__":
 	TIMESERIES="datafiles/wrair2015_v2_fpkm-p1_s19.tsv"
 	TS_TYPE="row"  # or 'col', type of time series file format
 	TS_TRUNCATION=42 #cut after 42 time units (NOT after index 42)
-	labels = ["PF3D7_0611200","PF3D7_1139300" ,"PF3D7_1146600","PF3D7_1222600","PF3D7_1317200","PF3D7_1337100","PF3D7_1356900" ,"PF3D7_1408200"]
-	print makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=1,step=0.01)
-	print makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.1,step=0.01)
+	# labels = ["PF3D7_0611200","PF3D7_1139300" ,"PF3D7_1146600","PF3D7_1222600","PF3D7_1317200","PF3D7_1337100","PF3D7_1356900" ,"PF3D7_1408200"]
+	labels = ["PF3D7_0611200","PF3D7_1139300","PF3D7_1337100","PF3D7_0802100","PF3D7_0317200","PF3D7_0934400","PF3D7_1308100","PF3D7_0525000","PF3D7_1473900","PF3D7_1205500","PF3D7_1143100"]
+	fnamestart = "partialorder_11D_malariaDuke_"
+	json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=1,step=0.01), open(fnamestart+'1-0.json','w'))
+	json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.5,step=0.01), open(fnamestart+'0-5.json','w'))
+	json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.1,step=0.01), open(fnamestart+'0-1.json','w'))
+	json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.0,step=0.01), open(fnamestart+'0-0.json','w'))
