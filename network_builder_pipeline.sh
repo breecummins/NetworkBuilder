@@ -11,15 +11,15 @@ OUTPUTDIR=./outputfiles$DATETIME
 mkdir -p $INPUTDIR/networks/ $INPUTDIR/POs/ $DATABASEDIR/ $OUTPUTDIR/
 
 DSGRN=/share/data/bcummins/DSGRN
-STARTINGFILE="$DSGRN/networks/8D_2016_04_11_malaria40hr_50TF_top25_T0-05_essential.txt" #11D_2016_04_18_malaria40hrDuke_subcycle_90TF_essential.txt"
-LEMFILE="datafiles/wrair2015_v2_fpkm-p1_s19_50tfs_top25_dljtk_lem_score_table.txt" #wrair2015_v2_fpkm-p1_s19_90tfs_top25_dljtk_lem_score_table.txt"
-RANKEDGENES="datafiles/wrair-fpkm-p1_malaria_s19_DLxJTK_50putativeTFs.txt" #wrair-fpkm-p1_malaria_s19_DLxJTK_90putativeTFs.txt"
+STARTINGFILE="$DSGRN/networks/11D_2016_04_18_malaria40hrDuke_90TF_essential.txt"
+LEMFILE="datafiles/wrair2015_v2_fpkm-p1_s19_90tfs_top25_dljtk_lem_score_table.txt" #wrair2015_v2_fpkm-p1_s19_90tfs_top25_dljtk_lem_score_table.txt"
+RANKEDGENES="datafiles/wrair-fpkm-p1_malaria_s19_DLxJTK_90putativeTFs.txt" #wrair-fpkm-p1_malaria_s19_DLxJTK_90putativeTFs.txt"
 NUMNODES=10 # add nodes of rank 1 to n singly and in pairs
 NUMEDGES=10 # add edges of rank 1 to n singly and in pairs
 TIMESERIES="datafiles/wrair2015_v2_fpkm-p1_s19.tsv"
 TS_TYPE="row"  # or 'col', type of time series file format
 TS_TRUNCATION=42 #cut after 42 time units (NOT after index 42)
-SCALING_FACTOR=0.00   # between 0 and 1; 0 = most restrictive partial order; 1 = least restrictive
+SCALING_FACTOR=0.05   # between 0 and 1; 0 = most restrictive partial order; 1 = least restrictive
 
 python ./makeFilesForAnalysis.py $STARTINGFILE $LEMFILE $RANKEDGENES $NUMNODES $NUMEDGES $TIMESERIES $TS_TYPE $TS_TRUNCATION $SCALING_FACTOR $INPUTDIR
 
