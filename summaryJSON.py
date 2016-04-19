@@ -1,7 +1,5 @@
 import json, sys
 
-print sys.argv[:]
-
 networkfile = sys.argv[1]
 partialorderfile = sys.argv[2]
 MATCHES=sys.argv[3]

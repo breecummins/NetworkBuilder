@@ -10,9 +10,9 @@ OUTPUTDIR=./outputfiles$DATETIME
 
 mkdir -p $INPUTDIR/networks/ $INPUTDIR/POs/ $DATABASEDIR/ $OUTPUTDIR/
 
-STARTINGFILE="datafiles/8D_2016_04_11_malaria40hr_50TF_top25_T0-05_essential.txt"
-LEMFILE="datafiles/wrair2015_v2_fpkm-p1_s19_50tfs_top25_dljtk_lem_score_table.txt"
-RANKEDGENES="datafiles/wrair-fpkm-p1_malaria_s19_DLxJTK_50putativeTFs.txt"
+STARTINGFILE="/share/data/bcummins/DSGRN/networks/11D_2016_04_18_malaria40hrDuke_90TF_top25_essential.txt"
+LEMFILE="datafiles/wrair2015_v2_fpkm-p1_s19_90tfs_top25_dljtk_lem_score_table.txt"
+RANKEDGENES="datafiles/wrair-fpkm-p1_malaria_s19_DLxJTK_90putativeTFs.txt"
 NUMNODES=10 # add nodes of rank 1 to n singly and in pairs
 NUMEDGES=10 # add edges of rank 1 to n singly and in pairs
 TIMESERIES="datafiles/wrair2015_v2_fpkm-p1_s19.tsv"

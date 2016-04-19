@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SAVEFILE=$1 #json
-OUTPUTDIR=$2 #where all the results files are
+OUTPUTDIR=$2 #temp results files
 INPUTDIR=$3 #temp network files and partial orders
 DATABASEDIR=$4 #temp databases
 
