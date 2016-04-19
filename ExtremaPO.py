@@ -450,15 +450,19 @@ def makeJSONstring(dataFileName,fileType,labels,timeCutOff=-1,n=1,scalingFactor=
 	return ConvertToJSON(graph,sumList,newTSLabels)
 
 if __name__ == "__main__":	
-	# # Prints the PO's from the conversion to S.H.'s graph class
-	# GraphToDigraph(graph)
-	TIMESERIES="datafiles/wrair2015_v2_fpkm-p1_s19.tsv"
+	# # # Prints the PO's from the conversion to S.H.'s graph class
+	# # GraphToDigraph(graph)
+	# TIMESERIES="datafiles/wrair2015_v2_fpkm-p1_s19.tsv"
+	# TS_TYPE="row"  # or 'col', type of time series file format
+	# TS_TRUNCATION=42 #cut after 42 time units (NOT after index 42)
+	# labels = ["PF3D7_0611200","PF3D7_1139300" ,"PF3D7_1146600","PF3D7_1222600","PF3D7_1317200","PF3D7_1337100","PF3D7_1356900" ,"PF3D7_1408200"]
+	# # labels = ["PF3D7_0611200","PF3D7_1139300","PF3D7_1337100","PF3D7_0802100","PF3D7_0317200","PF3D7_0934400","PF3D7_1308100","PF3D7_0525000","PF3D7_1473900","PF3D7_1205500","PF3D7_1143100"]
+	TIMESERIES="datafiles/haase-fpkm-p1_yeast_s29.txt" #wrair2015_v2_fpkm-p1_s19.tsv"
 	TS_TYPE="row"  # or 'col', type of time series file format
-	TS_TRUNCATION=42 #cut after 42 time units (NOT after index 42)
-	labels = ["PF3D7_0611200","PF3D7_1139300" ,"PF3D7_1146600","PF3D7_1222600","PF3D7_1317200","PF3D7_1337100","PF3D7_1356900" ,"PF3D7_1408200"]
-	fnamestart = "partialorder_8D_malaria40hr_"
-	# labels = ["PF3D7_0611200","PF3D7_1139300","PF3D7_1337100","PF3D7_0802100","PF3D7_0317200","PF3D7_0934400","PF3D7_1308100","PF3D7_0525000","PF3D7_1473900","PF3D7_1205500","PF3D7_1143100"]
-	# fnamestart = "partialorder_11D_malariaDuke_"
+	TS_TRUNCATION=-1 #42 #cut after 42 time units (NOT after index 42)
+	labels = ["FKH1","SPT21","PLM2","WTM2","SWI4","NDD1","HCM1"]
+
+
 	print json.loads(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.1,step=0.01) )["poset"]
 	print json.loads(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.05,step=0.01) )["poset"]
 	print json.loads(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.0,step=0.01) )["poset"]

@@ -15,7 +15,7 @@ INPUTDIR = sys.argv[10]
 
 with open(STARTINGFILE,'r') as sf:
     startingnetwork = sf.read()
-networks = dp.runNetworkBuilder_OneAndTwo(STARTINGFILE,LEMFILE,RANKEDGENES,int(NUMNODES),int(NUMEDGES),is_new_node_essential=True)
+networks = dp.runNetworkBuilder_OneAndTwo(startingnetwork,LEMFILE,RANKEDGENES,int(NUMNODES),int(NUMEDGES),is_new_node_essential=True,network_is_file=False)
 networks = [startingnetwork] + networks
 genes = []
 for network in networks:
@@ -26,11 +26,14 @@ for network in networks:
         pass
     genes.append(tuple([eqn.split()[0] for eqn in eqns]))
 uniquegenes = list(set(genes))
+
+# The following function call is slow. Needs to speed up if possible.
 uniquePOs = []
 for labels in uniquegenes:
     uniquePOs.append(EPO.makeJSONstring(TIMESERIES,TS_TYPE,labels,float(TS_TRUNCATION),n=1,scalingFactor=float(SCALING_FACTOR),step=0.01))
 # for po in uniquePOs:
 #     print json.loads(po)["poset"]
+
 matchingPOs = [uniquePOs[uniquegenes.index(g)] for g in genes]
 
 for k,(net,po) in enumerate(zip(networks,matchingPOs)):

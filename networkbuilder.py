@@ -71,20 +71,16 @@ def checkEdgeAdmissible(outedges,regulation):
                 return False
     return True
 
-def makeNearbyNetwork(starting_network,LEMfile,ranked_genes_file,new_network_filename="network.txt",save2file=False,which_edge_to_add=1,add_new_node=True,which_node_to_add=1,is_new_node_essential=False,network_is_file=True):
+def makeNearbyNetwork(starting_network_str,source,target,type_reg,ranked_genes,new_network_filename="network.txt",save2file=False,which_edge_to_add=1,add_new_node=True,which_node_to_add=1,is_new_node_essential=False,network_is_file=True):
+    # starting_network_str is the string that comes from reading the network file 
+    # source, target, and type_reg are outputs of fileparsers.parseLEMfile
+    # ranked_genes is the output of fileparsers.parseRankedGenes
+
     # if adding a node, two new edges will be added connecting the new node to the graph and which_edge_to_add is ignored
     # if not adding a node, which_node_to_add is ignored and which_edge_to_add is used with existing nodes
 
-    # starting_network is either a file name or a string resulting from reading such a file;
-    # construct the graph for this network
-    if network_is_file:
-        starting_node_list,starting_graph,starting_regulation,essential = fileparsers.getGraphFromNetworkFile(network_filename = starting_network)
-    else:
-        starting_node_list,starting_graph,starting_regulation,essential = fileparsers.getGraphFromNetworkFile(networkstr = starting_network)
-
-    # get all of the LEM edges and the ranked genes
-    source,target,type_reg,lem_score = fileparsers.parseLEMfile(fname=LEMfile)
-    ranked_genes = fileparsers.parseRankedGenes(fname=ranked_genes_file)
+    # construct the graph for the starting network
+    starting_node_list,starting_graph,starting_regulation,essential = fileparsers.getGraphFromNetworkFile(networkstr = starting_network_str)
 
     # add a new node or edge
     if add_new_node:
