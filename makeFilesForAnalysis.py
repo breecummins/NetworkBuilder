@@ -13,10 +13,12 @@ TS_TRUNCATION  = sys.argv[8]
 SCALING_FACTOR = sys.argv[9]
 INPUTDIR = sys.argv[10]
 
+print INPUTDIR
+
 with open(STARTINGFILE,'r') as sf:
     startingnetwork = sf.read()
 networks = dp.runNetworkBuilder_OneAndTwo(STARTINGFILE,LEMFILE,RANKEDGENES,int(NUMNODES),int(NUMEDGES),is_new_node_essential=True)
-networks = startingnetwork + networks
+networks = [startingnetwork] + networks
 genes = []
 for network in networks:
     eqns = network.split('\n')
