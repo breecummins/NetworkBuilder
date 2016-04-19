@@ -11,7 +11,7 @@ OUTPUTDIR=./outputfiles$DATETIME
 mkdir -p $INPUTDIR/networks/ $INPUTDIR/POs/ $DATABASEDIR/ $OUTPUTDIR/
 
 DSGRN=/share/data/bcummins/DSGRN
-STARTINGFILE= "$DSGRN/networks/11D_2016_04_18_malaria40hrDuke_90TF_essential.txt"
+STARTINGFILE="$DSGRN/networks/11D_2016_04_18_malaria40hrDuke_subcycle_90TF_essential.txt"
 LEMFILE="datafiles/wrair2015_v2_fpkm-p1_s19_90tfs_top25_dljtk_lem_score_table.txt"
 RANKEDGENES="datafiles/wrair-fpkm-p1_malaria_s19_DLxJTK_90putativeTFs.txt"
 NUMNODES=10 # add nodes of rank 1 to n singly and in pairs
