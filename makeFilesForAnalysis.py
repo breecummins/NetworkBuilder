@@ -13,8 +13,6 @@ TS_TRUNCATION  = sys.argv[8]
 SCALING_FACTOR = sys.argv[9]
 INPUTDIR = sys.argv[10]
 
-print INPUTDIR
-
 with open(STARTINGFILE,'r') as sf:
     startingnetwork = sf.read()
 networks = dp.runNetworkBuilder_OneAndTwo(STARTINGFILE,LEMFILE,RANKEDGENES,int(NUMNODES),int(NUMEDGES),is_new_node_essential=True)
@@ -36,8 +34,8 @@ for labels in uniquegenes:
 matchingPOs = [uniquePOs[uniquegenes.index(g)] for g in genes]
 
 for k,(net,po) in enumerate(zip(networks,matchingPOs)):
-    with open('INPUTDIR/networks/network{}.txt'.format(k),'w') as nf:
+    with open(INPUTDIR+'/networks/network{}.txt'.format(k),'w') as nf:
         nf.write(net)
-    with open('INPUTDIR/POs/partialorder{}.json'.format(k),'w') as pf:
+    with open(INPUTDIR+'/POs/partialorder{}.json'.format(k),'w') as pf:
         pf.write(po)
 
