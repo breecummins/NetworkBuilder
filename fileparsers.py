@@ -118,6 +118,23 @@ def getGraphFromNetworkFile(network_filename=None,networkstr=None):
             graph[ind].append(target)  # change inedges to outedges
     return node_list,graph,regulation,essential
 
+def makeYeastRankedGenes(ranked_genes_file="/Users/bcummins/ProjectData/yeast/haase-fpkm-p1_yeast_s29_DLxJTK_257TFs.txt",LEMfile="/Users/bcummins/ProjectData/yeast/haase-fpkm-p1_yeast_s29_top25dljtk_lem_score_table.txt",savefile="datafiles/haase-fpkm-p1_yeast_s29_DLxJTK_top25TFs.txt"):
+    allrankedgenes = parseRankedGenes(ranked_genes_file)
+    source,_,_,_ = parseLEMfile(threshold=-1,fname=LEMfile)
+    genes = list(set(source))
+    ranked_genes=[]
+    for a in allrankedgenes:
+        if a in genes:
+            ranked_genes.append(a)
+        if len(ranked_genes) == len(genes):
+            with open(savefile,'w') as sf:
+                for k,r in enumerate(ranked_genes):
+                    sf.write(r+' '+str(k+1))
+                    if k+1 < len(ranked_genes):
+                        sf.write("\n")
+    if len(ranked_genes) < len(genes):
+        raise ValueError('Some genes are unranked.')
+
 def generateMasterList(fname='/Users/bcummins/ProjectData/malaria/wrair2015_pfalcip_462TF_forLEM/cuffNorm_subTFs_stdNames.txt'):
     # This is for all 462 TFs in the original malaria data set. May be deprecated.
     f=open(fname,'r')
@@ -130,4 +147,5 @@ def generateMasterList(fname='/Users/bcummins/ProjectData/malaria/wrair2015_pfal
     return genelist, timeseries
 
 if __name__ == '__main__':
-    parseRankedGenes("datafiles/wrair-fpkm-p1_malaria_s19_DLxJTK_50putativeTFs.txt")
+    # parseRankedGenes("datafiles/wrair-fpkm-p1_malaria_s19_DLxJTK_50putativeTFs.txt")
+    makeYeastRankedGenes()
