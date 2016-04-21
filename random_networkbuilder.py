@@ -1,4 +1,4 @@
-import fileparsers
+import fileparsers,networkbuilder
 import random,sys
 
 def getRandomInt(n):
@@ -59,7 +59,7 @@ def perturbNetwork(graph,reg):
         keepgoing = getRandomInt(2)
     return (graph,reg)
 
-def makeNearbyNetworks(starting_network_filename,N,savename = 'network_'):
+def makeNearbyNetworks(starting_network_filename,N,savename = 'network_',maxnodes=8):
     random.seed()
     _,starting_graph,starting_regulation,_ = fileparsers.getGraphFromNetworkFile(network_filename=starting_network_filename)
     networks=[]
@@ -68,7 +68,7 @@ def makeNearbyNetworks(starting_network_filename,N,savename = 'network_'):
         sg = [list(outedges) for outedges in starting_graph]  
         sr = [list(reg) for reg in starting_regulation]
         net = perturbNetwork(sg,sr)
-        if net not in networks:
+        if (len(net[0]) <= int(maxnodes)) and (net not in networks) and networkbuilder.checkEdgeAdmissible(*net):
             networks.append(net)
     for i,(graph,reg) in enumerate(networks):
         node_list = ['x'+str(k) for k in range(len(graph))]

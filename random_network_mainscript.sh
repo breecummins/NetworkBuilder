@@ -4,7 +4,8 @@
 
 STARTINGFILE=$1 # network spec file: /Users/bcummins/GIT/DSGRN/networks/5D_2016_02_08_cancer_withRP_essential.txt
 NUMNETWORKS=$2 # number of networks: 10000
-DSGRN=$3 #/Users/bcummins/GIT/DSGRN
+MAXNODES=$3 # max number of nodes to allow (it is possible to choose too few nodes so that networks can never finish generating)
+DSGRN=$4 #/Users/bcummins/GIT/DSGRN
 
 SIGNATURES=$DSGRN/software/Signatures/bin/Signatures
 
