@@ -10,8 +10,11 @@ outputfilename = sys.argv[7]
 
 with open(networkfile,'r') as nf:
     networkstr = nf.read()
-with open(partialorderfile,'r') as pf:
-    postr = pf.read()
+if partialorderfile != "None":
+    with open(partialorderfile,'r') as pf:
+        postr = pf.read()
+else:
+    postr = "None"
 
 output = {"Network" : networkstr, "PartialOrder" : postr, "ParameterCount" : int(NODES), "StableFCParameterCount" : int(STABLEFCS), "MultistableParameterCount" : int(MULTISTABLE), "StableFCMatchesParameterCount" : int(MATCHES)}
 

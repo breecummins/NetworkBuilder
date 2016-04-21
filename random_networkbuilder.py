@@ -65,7 +65,7 @@ def makeNearbyNetworks(starting_network_filename,N,savename = 'network_'):
     networks=[]
     while len(networks) < int(N):
         # below: the lists within the starting graph must be explicitly copied or else the starting graph gets reassigned within perturbNetwork
-        sg = [list(graph) for graph in starting_graph]  
+        sg = [list(outedges) for outedges in starting_graph]  
         sr = [list(reg) for reg in starting_regulation]
         net = perturbNetwork(sg,sr)
         if net not in networks:
