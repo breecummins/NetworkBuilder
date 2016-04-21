@@ -1,5 +1,13 @@
 Instructions for running random network perturbations.
 
+Shell scripts: random_network_mainscript.sh
+		 	   random_network_helperscript.sh
+		 
+Local python module dependencies: random_networkbuilder.py
+			   			   		  fileparsers (function: createNetworkFile)
+               			   		  networkbuilder (function: checkEdgeAdmissible)
+               			   		  summaryJSON.py
+
 From within this folder, call 
 
 . ./random_network_mainscript.sh NETWORK_SPEC NUMBER_OF_PERTURBATIONS MAX_NUM_NODES PATH_TO_DSGRN
@@ -20,10 +28,6 @@ NETWORK_SPEC=$DSGRN/networks/5D_2016_02_08_cancer_withRP_essential.txt
 NUMBER_OF_PERTURBATIONS=10000
 MAX_NUM_NODES=8
 
-Dependency list for random_networkbuilder.py:
-
-Standard libraries: random, sys
-Local modules: fileparsers (function: createNetworkFile)
-               networkbuilder (function: checkEdgeAdmissible)
-
 Second, random_network_mainscript.sh loops through the generated network files and calls a qsub job for each on the script random_network_helperscript.sh. The helper script generates the database for the network using 8 cores and then performs sql searches on the output. No pattern matching is performed. The results of the sql searches are dumped in a json file (python module summaryJSON.py) along with the network specification, and then the intermediate files (network, database, and sql search results) are deleted.
+
+
