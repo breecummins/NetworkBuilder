@@ -7,7 +7,7 @@ def sort_by_list(X,Y,reverse=False):
             newlists[k].append(z)
     return newlists
 
-def parseLEMfile(threshold=0,fname='/Users/bcummins/ProjectData/malaria/wrair2015_v2_fpkm-p1_s19_40hr_highest_ranked_genes/wrair2015_v2_fpkm-p1_s19_90tfs_top25_dljtk_lem_score_table.txt'):
+def parseLEMfile(threshold=0,fname='/Users/bcummins/ProjectData/malaria/wrair2015_v2_fpkm-p1_s19_40hr_highest_ranked_genes/wrair2015_v2_fpkm-p1_s19_50tfs_top25_dljtk_lem_score_table.txt'):
     # returns the source, target, and type of regulation sorted by decreasing LEM score (also returned)
     # file format must be:
     # 1) optional comment lines denoted by #
@@ -148,4 +148,10 @@ def generateMasterList(fname='/Users/bcummins/ProjectData/malaria/wrair2015_pfal
 
 if __name__ == '__main__':
     # parseRankedGenes("datafiles/wrair-fpkm-p1_malaria_s19_DLxJTK_50putativeTFs.txt")
-    makeYeastRankedGenes()
+    # makeYeastRankedGenes()
+    source,target,type_reg,lem_score = parseLEMfile()
+    for k,(s,t,l) in enumerate(zip(source,target,lem_score)):
+        if s == 'PF3D7_1139300' and t == 'PF3D7_1337100':
+            print l
+            print k
+            print len(source)
