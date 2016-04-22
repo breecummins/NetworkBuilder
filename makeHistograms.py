@@ -38,6 +38,7 @@ def makeHistogram(fname="stats.txt",histtitle='8D LEM network, 154 perturbations
     plotHist(MatchesOverFCs,'% matches over stable FCs',histtitle+', scaling factor '+scaling_factor,float(startingvals[2]))
 
 def makeScatterPlot(fname1="stats_0-00.txt",fname2="stats_0-05.txt",startingvals=[(float('nan'),float('nan'))]*3,title='8D LEM network',scaling_factor1='0.00',scaling_factor2='0.05'):
+    # SCATTER PLOT DEPENDS ON HAVING THE SAME NETWORKS IN THE SAME ORDER. IF THIS DOESN'T HAPPEN, DATA WILL HAVE TO BE SORTED
     FCoverParams1, MatchesOverParams1,MatchesOverFCs1 = histogramData(fname1)
     FCoverParams2, MatchesOverParams2,MatchesOverFCs2 = histogramData(fname2)
 
@@ -52,9 +53,9 @@ def makeScatterPlot(fname1="stats_0-00.txt",fname2="stats_0-05.txt",startingvals
         plt.grid(True)
         plt.show()
 
-    plotScatter(MatchesOverParams1,MatchesOverParams2,title+', % matches over total parameters','scaling factor '+scaling_factor1,'scaling factor '+scaling_factor2,startingvals[0])
-    plotScatter(MatchesOverFCs1,MatchesOverFCs2,title+', % matches over stable FCs','scaling factor '+scaling_factor1,'scaling factor '+scaling_factor2,startingvals[1])
-    plotScatter(MatchesOverParams1,FCoverParams1,title+', resolution '+scaling_factor1,'% matches over total parameters','% stable FCs',startingvals[2])
+    # plotScatter(MatchesOverParams1,MatchesOverParams2,title+', % matches over total parameters','scaling factor '+scaling_factor1,'scaling factor '+scaling_factor2,startingvals[0])
+    # plotScatter(MatchesOverFCs1,MatchesOverFCs2,title+', % matches over stable FCs','scaling factor '+scaling_factor1,'scaling factor '+scaling_factor2,startingvals[1])
+    plotScatter(MatchesOverParams2,FCoverParams2,title+', resolution '+scaling_factor2,'% matches over total parameters','% stable FCs',startingvals[2])
 
 
 if __name__ == "__main__":
@@ -65,4 +66,4 @@ if __name__ == "__main__":
     # [11.3,20.1,5.0]
 
     # makeHistogram(fname=sys.argv[1],histtitle=sys.argv[2],scaling_factor=sys.argv[3],startingvals=eval(sys.argv[4]))
-    makeScatterPlot(*sys.argv[1:3],startingvals=eval(sys.argv[3]))
+    makeScatterPlot(*sys.argv[1:3],startingvals=eval(sys.argv[3]),title=sys.argv[4])
