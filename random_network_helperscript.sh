@@ -15,6 +15,9 @@
 # get unique identifier
 NUM=$5
 
+# print file name in case the job has to be aborted
+echo "Starting $2."
+
 # make database
 mpiexec --mca mpi_preconnect_mpi 1 -np $NSLOTS -x LD_LIBRARY_PATH $1 $2 $3
 
