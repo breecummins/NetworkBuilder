@@ -1,4 +1,5 @@
-import fileparsers,networkbuilder
+import fileparsers
+from databasecomputability import checkComputability
 import random,sys
 
 def getRandomInt(n):
@@ -57,28 +58,40 @@ def perturbNetwork(graph,reg):
         else:
             graph,reg = addNode(graph,reg)
         keepgoing = getRandomInt(2)
-    return (graph,reg)
+    return graph,reg
 
-def makeNearbyNetworks(starting_network_filename,N,savename = 'network_',maxnodes=8):
+def makeNearbyNetworks(starting_network_filename,numperturbations,savename = 'network_',maxnodes=8,maxparams=200000):
+    # reset random seed for every run
     random.seed()
+    # generate starting graph of labeled out-edges (activation and repression)
     _,starting_graph,starting_regulation,_ = fileparsers.getGraphFromNetworkFile(network_filename=starting_network_filename)
-    networks=[]
-    while len(networks) < int(N):
+    # begin analysis with starting network spec -- change var names, save to file, and initialize networks with [networkstr]
+    node_list = ['x'+str(k) for k in range(len(starting_graph))]
+    essential = [True] * len(starting_graph)
+    fname = savename+str(0)+'.txt'  
+    networks = [fileparsers.createNetworkFile(node_list,starting_graph,starting_regulation,essential,fname=fname,save2file=True)]
+    # now make perturbations
+    # note that the while loop below can be an infinite loop if numperturbations is too large for maxnodes and maxparams
+    while len(networks) < int(numperturbations)+1: 
         # below: the lists within the starting graph must be explicitly copied or else the starting graph gets reassigned within perturbNetwork
         sg = [list(outedges) for outedges in starting_graph]  
         sr = [list(reg) for reg in starting_regulation]
-        net = perturbNetwork(sg,sr)
-        if (len(net[0]) <= int(maxnodes)) and (net not in networks) and networkbuilder.checkEdgeAdmissible(*net):
-            networks.append(net)
-    for i,(graph,reg) in enumerate(networks):
+        # perturb the starting network
+        graph,reg = perturbNetwork(sg,sr)
+        # extract the network spec from the graph and regulation type
         node_list = ['x'+str(k) for k in range(len(graph))]
         essential = [True] * len(graph)
-        fname = savename+str(i)+'.txt'
-        fileparsers.createNetworkFile(node_list,graph,reg,essential,fname,save2file=True)
+        network_spec = fileparsers.createNetworkFile(node_list,graph,reg,essential,save2file=False)
+        # check that network spec is all of unique, small enough, and computable, then write to file and save string for comparison
+        if (len(graph) <= int(maxnodes)) and (network_spec not in networks) and checkComputability(network_spec,maxparams):
+            fname = savename+str(len(networks))+'.txt'
+            with open(fname,'w') as f:
+                f.write(network_spec)
+            networks.append(network_spec)
 
 if __name__ == '__main__':
     # fname="/Users/bcummins/GIT/DSGRN/networks/5D_2016_02_08_cancer_withRP_essential.txt"
-    # N = 200
-    # savename = 'networks/randnet_'
+    # numperturbations = 200
+    # savename = 'networks/network_'
     makeNearbyNetworks(*sys.argv[1:])
 

@@ -15,4 +15,9 @@ done
 
 printf '%s\n' '$' 's/.$/]/' wq | ex $SAVEFILE #replace last comma with closing bracket
 
-rm -r $OUTPUTDIR $INPUTDIR $DATABASEDIR
+if [ "$( head $SAVEFILE )" ]; then
+	rm -r $OUTPUTDIR $INPUTDIR $DATABASEDIR
+else
+	echo "Concatenation failed."
+fi
+

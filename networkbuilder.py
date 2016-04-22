@@ -1,4 +1,5 @@
 import fileparsers
+from databasecomputability import checkEdgeAdmissible
 
 def addNode(node_list,ranked_genes,source,target,type_reg,which_node_to_add = 1):
     count = 0
@@ -37,39 +38,6 @@ def addEdge(which_edge_to_add,node_list,graph,regulation,source,target,type_reg)
                     new_edge = (s_ind,t_ind,r)
                     break
     return new_edge
-
-def checkEdgeAdmissible(outedges,regulation):
-    # THIS CODE CAN EASILY BECOME OBSOLETE!!!!
-    # The following is based on the files in /data/CHomP/Projects/DSGRN/DB/data/logic/ as of 04/12/16,
-    # and on the choice that activations are ALWAYS summed and repressions are ALWAYS multiplied.
-    inedges = []
-    inreg = []
-    for node in range(len(outedges)):
-        ie = []
-        ir = []
-        for j,(o,r) in enumerate(zip(outedges,regulation)):
-            try:
-                ind = o.index(node)
-            except:
-                ind = None
-            if ind is not None:
-                ie.append(j)
-                ir.append(r[ind])
-        inedges.append(ie)
-        inreg.append(ir)
-    for (ie, oe, ir) in zip(inedges,outedges,inreg):
-        if len(ie) > 4:
-            return False
-        elif len(oe) > 5:
-            return False
-        elif len(ie) == 4: 
-            if len(oe) == 3 and ir.count('a') == 3: # three a's are added, three r's are multiplied
-                return False
-            elif len(oe) == 4 and ir.count('a') > 1:
-                return False
-            elif len(oe) == 5:
-                return False
-    return True
 
 def makeNearbyNetwork(starting_network_str,source,target,type_reg,ranked_genes,new_network_filename="network.txt",save2file=False,which_edge_to_add=1,add_new_node=True,which_node_to_add=1,is_new_node_essential=False,network_is_file=True):
     # starting_network_str is the string that comes from reading the network file 
@@ -111,10 +79,7 @@ def makeNearbyNetwork(starting_network_str,source,target,type_reg,ranked_genes,n
         else:
             graph[s].append(t)
             regulation[s].append(r)
-    # # make output
-    # if draw_network:
-    #     graphoutput.makeGraph(node_list,graph,regulation,new_network_filename.replace(".txt",".pdf"))
-    admissible = checkEdgeAdmissible(graph,regulation)
+    admissible = checkEdgeAdmissible(graph,regulation) #FIXME -- use new computability code that calls dsgrn
     if admissible:
         networkstr = fileparsers.createNetworkFile(node_list,graph,regulation,essential,new_network_filename,save2file= save2file)
     else:
