@@ -15,7 +15,7 @@ INPUTDIR=./random_networks$DATETIME
 DATABASEDIR=./random_databases$DATETIME
 OUTPUTDIR=./random_outputfiles$DATETIME
 
-mkdir -p $DATABASEDIR/ $OUTPUTDIR/
+mkdir -p $DATABASEDIR/ $OUTPUTDIR/ $INPUTDIR/
 
 python ./random_networkbuilder.py $STARTINGFILE $NUMNETWORKS "$INPUTDIR/network_" $MAXNODES $MAXPARAMS
 
