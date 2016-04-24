@@ -11,7 +11,7 @@ OUTPUTDIR=./outputfiles$DATETIME
 mkdir -p $INPUTDIR/networks/ $INPUTDIR/POs/ $DATABASEDIR/ $OUTPUTDIR/
 
 DSGRN=/share/data/bcummins/DSGRN
-STARTINGFILE="/Users/bcummins/GIT/DSGRN/networks/5D_2016_04_23_wavepool_essential.txt" 
+STARTINGFILE="$DSGRN/networks/5D_2016_04_23_wavepool_essential.txt" 
 LEMFILE="datafiles/haase-fpkm-p1_yeast_s29_top25dljtk_lem_score_table.txt" 
 RANKEDGENES="datafiles/haase-fpkm-p1_yeast_s29_DLxJTK_top25TFs.txt" 
 NUMNODES=10 # add nodes of rank 1 to n singly and in pairs
