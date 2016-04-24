@@ -34,7 +34,7 @@ sqlite3 -separator " " $3 'select count(*) from Signatures natural join (select 
 # yank summary results
 MATCHES="not searched"
 STABLEFCS=`cut -d " " -f 1 $4/StableFCList$NUM.txt | sort | uniq | wc -w`
-MULTISTABLE=`cut -d " " -f 1 $4/MultistabilityList$NUM.txt | sort | uniq | wc -w`
+MULTISTABLE=`cat $4/MultistabilityList$NUM.txt`
 NODES=`dsgrn network $2 parameter | sed 's/[^0-9]*\([0-9]*\)[^0-9]*/\1/g'`
 # note: grep -o "[0-9]*" appears to be buggy on Mac OS X, hence the more complex sed expression instead
 

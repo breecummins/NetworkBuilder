@@ -460,9 +460,10 @@ if __name__ == "__main__":
 	TIMESERIES="datafiles/haase-fpkm-p1_yeast_s29.txt" #wrair2015_v2_fpkm-p1_s19.tsv"
 	TS_TYPE="row"  # or 'col', type of time series file format
 	TS_TRUNCATION=85 #42 #cut after 42 time units (NOT after index 42)
-	labels = ["FKH1","SPT21","PLM2","WTM2","SWI4","NDD1","HCM1"]
+	# labels = ["FKH1","SPT21","PLM2","WTM2","SWI4","NDD1","HCM1"]
+	# labels = ["SWI4","HCM1","NDD1","SWI5","YOX1"]
+	labels = ["SWI4","HCM1","NDD1","ACE2","YHP1"]
 
-
-	print json.loads(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.1,step=0.01) )["poset"]
-	print json.loads(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.08,step=0.01) )["poset"]
-	print json.loads(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.0,step=0.01) )["poset"]
+	# print json.loads(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.1,step=0.01) )["poset"]
+	print json.loads(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.05,step=0.01) )
+	# print json.loads(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.0,step=0.01) )["poset"]

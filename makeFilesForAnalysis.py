@@ -1,6 +1,6 @@
 import ExtremaPO as EPO
 import deterministicperturbations as dp
-import sys,json
+import sys,json,subprocess
 
 STARTINGFILE = sys.argv[1] 
 LEMFILE = sys.argv[2] 
@@ -12,11 +12,22 @@ TS_TYPE = sys.argv[7]
 TS_TRUNCATION  = sys.argv[8] 
 SCALING_FACTOR = sys.argv[9]
 INPUTDIR = sys.argv[10]
+MAXPARAMS = sys.argv[11]
 
 with open(STARTINGFILE,'r') as sf:
     startingnetwork = sf.read()
-networks = dp.runNetworkBuilder_OneAndTwo(startingnetwork,LEMFILE,RANKEDGENES,int(NUMNODES),int(NUMEDGES),is_new_node_essential=True,network_is_file=False)
-networks = [startingnetwork] + networks
+candidates = dp.runNetworkBuilder_OneAndTwo(startingnetwork,LEMFILE,RANKEDGENES,int(NUMNODES),int(NUMEDGES),is_new_node_essential=True,network_is_file=False)
+candidates = [startingnetwork] + candidates
+
+networks=[]
+for k,network_spec in enumerate(candidates):
+    sentence = subprocess.check_output(['dsgrn','network', network_spec,'parameter'],shell=False)
+    numparams = [int(s) for s in sentence.split() if s.isdigit()][0]
+    if numparams <= MAXPARAMS:
+        networks.append(network_spec)
+
+print "Number of networks is {}.".format(len(networks))
+
 genes = []
 for network in networks:
     eqns = network.split('\n')

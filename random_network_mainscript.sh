@@ -15,17 +15,19 @@ INPUTDIR=./random_networks$DATETIME
 DATABASEDIR=./random_databases$DATETIME
 OUTPUTDIR=./random_outputfiles$DATETIME
 
-mkdir -p $DATABASEDIR/ $OUTPUTDIR/ $INPUTDIR/
+mkdir $INPUTDIR/
+
+# mkdir -p $DATABASEDIR/ $OUTPUTDIR/ $INPUTDIR/
 
 python ./random_networkbuilder.py $STARTINGFILE $NUMNETWORKS "$INPUTDIR/network_" $MAXNODES $MAXPARAMS
 
-# use xargs below since the number of files can be large
-for NETWORK in $( echo $INPUTDIR/* | xargs ls ); do
-	NUM=$(echo `basename $NETWORK` | sed -e s/[^0-9]//g);
-	DATABASENAME="$DATABASEDIR/database$NUM.db";
+# # use xargs below since the number of files can be large
+# for NETWORK in $( echo $INPUTDIR/* | xargs ls ); do
+# 	NUM=$(echo `basename $NETWORK` | sed -e s/[^0-9]//g);
+# 	DATABASENAME="$DATABASEDIR/database$NUM.db";
 
-	qsub random_network_helperscript.sh $SIGNATURES $NETWORK $DATABASENAME $OUTPUTDIR $NUM
+# 	qsub random_network_helperscript.sh $SIGNATURES $NETWORK $DATABASENAME $OUTPUTDIR $NUM
 
-done
+# done
 
 

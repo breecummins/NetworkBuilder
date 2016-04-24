@@ -37,7 +37,7 @@ mpiexec -np 9 $4 $2 $5 $6/StableFCList$NUM.txt $6/Matches$NUM.txt > /dev/null
 # yank summary results
 MATCHES=`cut -d " " -f 1 $6/Matches$NUM.txt | sort | uniq | wc -w`
 STABLEFCS=`cut -d " " -f 1 $6/StableFCList$NUM.txt | sort | uniq | wc -w`
-MULTISTABLE=`cut -d " " -f 1 $6/MultistabilityList$NUM.txt | sort | uniq | wc -w`
+MULTISTABLE=`cat $6/MultistabilityList$NUM.txt | tr -d "\n"`
 NODES=`dsgrn network $2 parameter | sed 's/[^0-9]*\([0-9]*\)[^0-9]*/\1/g'`
 # note: grep -o "[0-9]*" appears to be buggy on Mac OS X, hence the more complex sed expression instead
 
