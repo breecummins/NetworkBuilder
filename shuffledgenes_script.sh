@@ -6,7 +6,12 @@
 DATETIME=`date +%Y_%m_%d_%H_%M_%S`
 INPUTDIR=./shuffledinputfiles$DATETIME
 OUTPUTDIR=./shuffledoutputfiles$DATETIME
-NETWORKFILE="/Users/bcummins/GIT/DSGRN/networks/11D_2016_04_18_malaria40hrDuke_90TF_essential.txt"
+
+DSGRN=/share/data/bcummins/DSGRN
+SIGNATURES=$DSGRN/software/Signatures/bin/Signatures
+PATTERNMATCH=$DSGRN/software/PatternMatch/bin/PatternMatchDatabase
+NETWORKFILE="$DSGRN/networks/11D_2016_04_18_malaria40hrDuke_90TF_essential.txt"
+
 DATABASENAME="$OUTPUTDIR/11D_2016_04_18_malaria40hrDuke_90TF_essential.db"
 RANKEDGENES="datafiles/wrair-fpkm-p1_malaria_s19_DLxJTK_90putativeTFs.txt"
 NUMTOPGENES=25
@@ -15,9 +20,6 @@ TIMESERIES="datafiles/wrair2015_v2_fpkm-p1_s19.tsv"
 TS_TYPE="row"  # or 'col', type of time series file format
 TS_TRUNCATION=42 #cut after x time units (NOT after index x)
 SCALING_FACTORS=0.05   # list of 2 floats between 0 and 1; 0 = most restrictive partial order; 1 = least restrictive
-DSGRN=/Users/bcummins/GIT/DSGRN
-SIGNATURES=$DSGRN/software/Signatures/bin/Signatures
-PATTERNMATCH=$DSGRN/software/PatternMatch/bin/PatternMatchDatabase
 
 # make time stamped folders
 mkdir -p $INPUTDIR/ $OUTPUTDIR/
