@@ -59,6 +59,15 @@ def makestats(fname='results.json',savename='stats.txt'):
             else:
                 sn.write(str(pc) + '/' + str(fcpc) + '/' + str(fcpm) + '/NaN'+"\n")
 
+def makestats_multistability(fname='results.json',savename='stats.txt'):
+    with open(fname,'r') as f:
+        listofnetworks = json.load(f)
+    with open(savename,'w') as sn:
+        for n in listofnetworks:
+            pc = n["ParameterCount"]
+            fcpc = n["StableFCParameterCount"]
+            mpc = n["MultistableParameterCount"]
+            sn.write(str(pc) + '/' + str(fcpc) + '/' + str(mpc)+"\n")
 
 def makestats_multiplefile(DIR='outfiles/'):
     for fname in glob.glob(DIR+'results*.json'):
@@ -73,13 +82,13 @@ def makestats_multiplefile(DIR='outfiles/'):
             print str(pc) + '/' + str(fcpc) + '/' + str(fcpm) + '/NaN'
 
 if __name__=='__main__':
-    makestats(sys.argv[1],sys.argv[2]) 
+    # makestats(sys.argv[1],sys.argv[2]) 
+    # makestats_multistability(sys.argv[1],sys.argv[2]) 
     # print json.load(open(sys.argv[1],'r'))[0]["Network"]
 
-    # NW1,inds1,listofstats_0_00_m_over_p = findmax(fname='/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/11D_2016_04_18_malaria40hrDuke_subcycle_90TF_essential_scalingfactor0-05_patternmatches.json',metric=1,nummax=3)
-    # for nw in NW1:
-    #     print nw["Network"]
-
+    NW1,inds1,listofstats_0_00_m_over_p = findmax(fname='/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/8D_2016_04_11_malaria40hr_50TF_top25_T0-05_essential_scalingfactor0-00_patternmatches.json',metric=1,nummax=5)
+    for nw in NW1:
+        print nw["Network"]
 
     # listofjsonnetworks=[u'PF3D7_0611200 : (PF3D7_1337100) : E\nPF3D7_1139300 : (~PF3D7_0611200) : E\nPF3D7_1146600 : (~PF3D7_1139300)(~PF3D7_1408200) : E\nPF3D7_1222600 : (PF3D7_1146600)(~PF3D7_1317200) : E\nPF3D7_1317200 : (PF3D7_1408200)(~PF3D7_1356900) : E\nPF3D7_1337100 : (PF3D7_1139300 + PF3D7_1317200)(~PF3D7_1146600) : E\nPF3D7_1356900 : (~PF3D7_1222600) : E\nPF3D7_1408200 : (~PF3D7_0611200) : E\n', u'PF3D7_0611200 : (PF3D7_1337100) : E\nPF3D7_1139300 : (~PF3D7_0611200) : E\nPF3D7_1146600 : (~PF3D7_1139300)(~PF3D7_1408200) : E\nPF3D7_1222600 : (PF3D7_1146600)(~PF3D7_1317200) : E\nPF3D7_1317200 : (PF3D7_1408200)(~PF3D7_1146600)(~PF3D7_1356900) : E\nPF3D7_1337100 : (PF3D7_1139300 + PF3D7_1317200) : E\nPF3D7_1356900 : (~PF3D7_1222600) : E\nPF3D7_1408200 : (~PF3D7_0611200) : E\n', u'PF3D7_0611200 : (PF3D7_1337100) : E\nPF3D7_1139300 : (~PF3D7_0611200) : E\nPF3D7_1146600 : (~PF3D7_1139300)(~PF3D7_1408200) : E\nPF3D7_1222600 : (PF3D7_1146600)(~PF3D7_1317200) : E\nPF3D7_1317200 : (PF3D7_1139300 + PF3D7_1408200)(~PF3D7_1356900) : E\nPF3D7_1337100 : (PF3D7_1139300 + PF3D7_1317200) : E\nPF3D7_1356900 : (~PF3D7_1222600) : E\nPF3D7_1408200 : (~PF3D7_0611200) : E\n']
 
@@ -90,6 +99,9 @@ if __name__=='__main__':
 
 
     # NW1,inds1,listofstats_0_00_m_over_p = findmax(fname='/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/8D_2016_04_11_malaria40hr_50TF_top25_T0-05_essential_scalingfactor0-00_patternmatches.json',metric=1,nummax=5)
+    # for n in NW1:
+    #     print n["Network"]
+
     # NW2,inds2,listofstats_0_05_m_over_p = findmax(fname='/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/8D_2016_04_11_malaria40hr_50TF_top25_T0-05_essential_scalingfactor0-05_patternmatches.json',metric=1,nummax=7)
     # NW3,inds3,listofstats_0_00_m_over_f = findmax(fname='/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/8D_2016_04_11_malaria40hr_50TF_top25_T0-05_essential_scalingfactor0-00_patternmatches.json',metric=2,nummax=4)
     # NW4,inds4,listofstats_0_00_f_over_p = findmax(fname='/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/8D_2016_04_11_malaria40hr_50TF_top25_T0-05_essential_scalingfactor0-00_patternmatches.json',metric=0,nummax=10)

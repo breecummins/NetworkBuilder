@@ -32,9 +32,9 @@ sqlite3 -separator " " $3 'select ParameterIndex, Vertex from Signatures natural
 sqlite3 -separator " " $3 'select count(*) from Signatures natural join (select MorseGraphIndex from (select MorseGraphIndex, count(*) as numMinimal from (select MorseGraphIndex,Vertex from MorseGraphVertices except select MorseGraphIndex,Source from MorseGraphEdges) group by MorseGraphIndex) where numMinimal > 1);'  > $4/MultistabilityList$NUM.txt
 
 # yank summary results
-MATCHES="not searched"
+MATCHES=-1
 STABLEFCS=`cut -d " " -f 1 $4/StableFCList$NUM.txt | sort | uniq | wc -w`
-MULTISTABLE=`cat $4/MultistabilityList$NUM.txt`
+MULTISTABLE=`cat $4/MultistabilityList$NUM.txt | tr -d "\n"`
 NODES=`dsgrn network $2 parameter | sed 's/[^0-9]*\([0-9]*\)[^0-9]*/\1/g'`
 # note: grep -o "[0-9]*" appears to be buggy on Mac OS X, hence the more complex sed expression instead
 

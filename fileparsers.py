@@ -38,6 +38,72 @@ def parseLEMfile(threshold=0,fname='/Users/bcummins/ProjectData/malaria/wrair201
     [lem_score,source,target,type_reg] = sort_by_list(lem_score,[source,target,type_reg],reverse=True) # reverse=True because we want descending lem scores
     return source,target,type_reg,lem_score
 
+def parseLEMfile_sqrtlossdroot(threshold=1,fname='/Users/bcummins/ProjectData/malaria/wrair2015_v2_fpkm-p1_s19_40hr_highest_ranked_genes/wrair2015_v2_fpkm-p1_s19_50tfs_top25_dljtk_lem_score_table.txt'):
+    # returns the source, target, and type of regulation sorted by increasing sqrt loss/root score (also returned). Smaller scores are higher ranking.
+    # file format must be:
+    # 1) optional comment lines denoted by #
+    # 2) optional line of column headers in which column 2 does not have the header "="
+    # 3) all following lines are data that begin with TARGET_GENE = TYPE_REG(SOURCE_GENE)
+    # 4) sqrt loss / root score is the last numerical score (and word) on each data line 
+    source=[]
+    type_reg=[]
+    target=[]
+    sqrtloss_root=[]
+    with open(fname,'r') as f:
+        for l in f.readlines():
+            if l[0] == '#':
+                continue
+            wordlist=l.split()
+            if wordlist[1] != "=":
+                continue
+            sqlr = float(wordlist[-1])
+            if sqlr<threshold:
+                target.append(wordlist[0]) 
+                sqrtloss_root.append(sqlr)
+                two_words=wordlist[2].split('(')
+                type_reg.append(two_words[0])
+                source.append(two_words[1][:-1])
+    [sqrtloss_root,source,target,type_reg] = sort_by_list(sqrtloss_root,[source,target,type_reg],reverse=False) 
+    return source,target,type_reg,sqrtloss_root
+
+def parseLEMfile_pickbadnetworks(usepldLap=1,threshold=0,fname='/Users/bcummins/ProjectData/malaria/wrair2015_v2_fpkm-p1_s19_40hr_highest_ranked_genes/wrair2015_v2_fpkm-p1_s19_50tfs_top25_dljtk_lem_score_table.txt'):
+    # returns the source, target, and type of regulation sorted by decreasing LEM score (also returned)
+    # file format must be:
+    # 1) optional comment lines denoted by #
+    # 2) optional line of column headers in which column 2 does not have the header "="
+    # 3) all following lines are data that begin with TARGET_GENE = TYPE_REG(SOURCE_GENE)
+    # 4) pld.lap score is the first numerical score on each data line 
+    source=[]
+    type_reg=[]
+    target=[]
+    score=[]
+    with open(fname,'r') as f:
+        for l in f.readlines():
+            if l[0] == '#':
+                continue
+            wordlist=l.split()
+            if wordlist[1] != "=":
+                continue
+            if usepldLap:
+                k=3
+                while not wordlist[k][0].isdigit():
+                    k+=1
+            else:
+                k=-1
+            S = float(wordlist[k])
+            if usepldLap:
+                condition = S<=threshold
+            else:
+                condition = S>=threshold
+            if condition:
+                target.append(wordlist[0]) 
+                score.append(S)
+                two_words=wordlist[2].split('(')
+                type_reg.append(two_words[0])
+                source.append(two_words[1][:-1])
+        # don't worry about sorting -- these are all the worst edges
+    return source,target,type_reg,score
+
 def parseRankedGenes(fname="/Users/bcummins/ProjectData/yeast/haase-fpkm-p1_yeast_s29_DLxJTK_257TFs.txt"):
     # file format: 
     # 1) optional comment lines denoted by hash 
@@ -149,9 +215,14 @@ def generateMasterList(fname='/Users/bcummins/ProjectData/malaria/wrair2015_pfal
 if __name__ == '__main__':
     # parseRankedGenes("datafiles/wrair-fpkm-p1_malaria_s19_DLxJTK_50putativeTFs.txt")
     # makeYeastRankedGenes()
-    source,target,type_reg,lem_score = parseLEMfile()
-    for k,(s,t,l) in enumerate(zip(source,target,lem_score)):
-        if s == 'PF3D7_1139300' and t == 'PF3D7_1337100':
-            print l
-            print k
-            print len(source)
+    # source,target,type_reg,lem_score = parseLEMfile()
+    # for k,(s,t,l) in enumerate(zip(source,target,lem_score)):
+    #     if s == 'PF3D7_1139300' and t == 'PF3D7_1337100':
+    #         print l
+    #         print k
+    #         print len(source)
+
+    source,target,type_reg,sqrtloss_root=parseLEMfile_sqrtlossdroot()
+    for k,(s,t,l) in enumerate(zip(source,target,sqrtloss_root)):
+        if k < 20:
+            print s,t,l

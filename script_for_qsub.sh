@@ -32,7 +32,7 @@ sqlite3 -separator " " $3 'select ParameterIndex, Vertex from Signatures natural
 sqlite3 -separator " " $3 'select count(*) from Signatures natural join (select MorseGraphIndex from (select MorseGraphIndex, count(*) as numMinimal from (select MorseGraphIndex,Vertex from MorseGraphVertices except select MorseGraphIndex,Source from MorseGraphEdges) group by MorseGraphIndex) where numMinimal > 1);'  > $6/MultistabilityList$NUM.txt
 
 # pattern match in stable FCs
-mpiexec -np 9 $4 $2 $5 $6/StableFCList$NUM.txt $6/Matches$NUM.txt > /dev/null
+mpiexec --mca mpi_preconnect_mpi 1 -np $NSLOTS -x LD_LIBRARY_PATH $4 $2 $5 $6/StableFCList$NUM.txt $6/Matches$NUM.txt > /dev/null
 
 # yank summary results
 MATCHES=`cut -d " " -f 1 $6/Matches$NUM.txt | sort | uniq | wc -w`

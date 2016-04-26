@@ -16,6 +16,6 @@ goodones=[]
 for k,network_spec in enumerate(networks):
     sentence = subprocess.check_output(['dsgrn','network', network_spec,'parameter'],shell=False)
     numparams = [int(s) for s in sentence.split() if s.isdigit()][0]
-    if numparams <= 200000:
+    if numparams <= 25000:
         goodones.append(network_spec)
 print len(goodones)
