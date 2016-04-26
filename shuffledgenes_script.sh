@@ -26,7 +26,7 @@ mkdir -p $INPUTDIR/ $OUTPUTDIR/
 python ./shuffledgenes.py $INPUTDIR $NETWORKFILE $RANKEDGENES $NUMTOPGENES $NUMSHUFFLES $TIMESERIES $TS_TYPE $TS_TRUNCATION $SCALING_FACTORS 
 
 # make database
-mpiexec --mca mpi_preconnect_mpi 1 -np $NSLOTS -x LD_LIBRARY_PATH $SIGNATURES $NETWORKFILE $DATABASENAME
+mpiexec --mca mpi_preconnect_mpi 1 -np 8 -x LD_LIBRARY_PATH $SIGNATURES $NETWORKFILE $DATABASENAME
 
 # search for stable FCs
 sqlite3 -separator " " $DATABASENAME 'select ParameterIndex, Vertex from Signatures natural join (select MorseGraphIndex,Vertex from (select MorseGraphIndex,Vertex from MorseGraphAnnotations where Label="FC" except select MorseGraphIndex,Source from MorseGraphEdges));' > $OUTPUTDIR/StableFCList.txt
@@ -45,17 +45,7 @@ for PATTERNFILE in $( ls $INPUTDIR/*); do
 	NUM=$(echo `basename $PATTERNFILE` | sed -e s/[^0-9]//g);
 	RESULTSFILE="$OUTPUTDIR/results_$NUM.json"
 
-	# pattern match in stable FCs pattern 1
-	mpiexec --mca mpi_preconnect_mpi 1 -np $NSLOTS -x LD_LIBRARY_PATH $PATTERNMATCH $NETWORKFILE $PATTERNFILE $OUTPUTDIR/StableFCList.txt $OUTPUTDIR/Matches_$NUM.txt > /dev/null
-
-	# yank summary results
-	MATCHES=`cut -d " " -f 1 $OUTPUTDIR/Matches_$NUM.txt | sort | uniq | wc -w`
-
-	# dump inputs and results to json
-	python summaryJSON.py $NETWORKFILE $PATTERNFILE $MATCHES $STABLEFCS $MULTISTABLE $NODES $RESULTSFILE
-
-	# delete intermediate files
-	rm $PATTERNFILE "$OUTPUTDIR/Matches_$NUM.txt" 
+	qsub shuffledgenes_helperscript.sh $PATTERNMATCH $NETWORKFILE $PATTERNFILE $OUTPUTDIR $NUM $STABLEFCS $MULTISTABLE $NODES $RESULTSFILE 
 done
 
 
