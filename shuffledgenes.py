@@ -26,6 +26,7 @@ copyfile(starting_network_file, INPUTDIR+'/networks/network0.txt')
 shuffles = [range(numnodes)]
 
 # now shuffle
+random.seed()
 essential=[True]*11
 
 while len(shuffles) < numshuffles+1:
