@@ -30,7 +30,7 @@ def getLEMranks(network_spec_str,totaledges,source,target,type_reg):
 
     return LEMranks
 
-def printLEMranks(results_file,LEM_file,fname="LEMranks.txt",use_pldLap=False,plotresults=False,title="11D malaria 40 hr 90 TF, s.f. 0.05, sqrt loss/root"):
+def printLEMranks(results_file,LEM_file,fname="LEMranks.txt",use_pldLap=False,plotresults=False,title="11D malaria 40 hr 90 TF, scaling factor 0.05"):
     # use_pldLap = False or 0 means use sqrt loss / root
     if use_pldLap:
         source,target,type_reg,lem_score = fileparsers.parseLEMfile(-1,LEM_file)
@@ -57,21 +57,24 @@ def printLEMranks(results_file,LEM_file,fname="LEMranks.txt",use_pldLap=False,pl
             for s in stats:
                 sf.write('/'.join([str(t) for t in s])+"\n")
         if plotresults:
-            plotLEMranks(stats,title)
+            plotLEMranks(stats,title,use_pldLap)
 
 
-def plotLEMranks(stats,title):
+def plotLEMranks(stats,title,use_pldLap):
     means,meds,percents=zip(*stats)
-    plt.scatter(means,percents,s=75,alpha=0.75)
-    plt.title = title+', mean rank'
+    plt.scatter(means[1:],percents[1:],s=75,alpha=0.75)
+    plt.hold('on')
+    plt.plot(means[0],percents[0],marker='*',color='r',markersize=24)
+    plt.title(title)
+    if use_pldLap:
+        plt.xlabel('Average normalized edge rank from pld.Lap')
+    else:
+        plt.xlabel('Average normalized edge rank from sqrt loss / root')
+    plt.ylabel('% pattern matches')
     plt.show()
-    plt.scatter(meds,percents,s=75,alpha=0.75)
-    plt.title = title+', median rank'
-    plt.show()
-
-
-    
-
+    # plt.scatter(meds,percents,s=75,alpha=0.75)
+    # plt.title = title+', median rank'
+    # plt.show()
 
 if __name__=="__main__":
     results_file = sys.argv[1]
