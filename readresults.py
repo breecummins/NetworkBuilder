@@ -86,9 +86,10 @@ if __name__=='__main__':
     # makestats_multistability(sys.argv[1],sys.argv[2]) 
     # print json.load(open(sys.argv[1],'r'))[0]["Network"]
 
-    NW1,inds1,listofstats_0_00_m_over_p = findmax(fname='/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/8D_2016_04_11_malaria40hr_50TF_top25_T0-05_essential_scalingfactor0-00_patternmatches.json',metric=1,nummax=5)
+    NW1,inds1,listofstats_0_00_m_over_p = findmax(fname='/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/11D_2016_04_18_malaria40hrDuke_90TF_essential_scalingfactor0-05_shuffledgenes.json',metric=1,nummax=5)
     for nw in NW1:
-        print nw["Network"]
+        print nw["PatternSpecification"]
+        print "\n"
 
     # listofjsonnetworks=[u'PF3D7_0611200 : (PF3D7_1337100) : E\nPF3D7_1139300 : (~PF3D7_0611200) : E\nPF3D7_1146600 : (~PF3D7_1139300)(~PF3D7_1408200) : E\nPF3D7_1222600 : (PF3D7_1146600)(~PF3D7_1317200) : E\nPF3D7_1317200 : (PF3D7_1408200)(~PF3D7_1356900) : E\nPF3D7_1337100 : (PF3D7_1139300 + PF3D7_1317200)(~PF3D7_1146600) : E\nPF3D7_1356900 : (~PF3D7_1222600) : E\nPF3D7_1408200 : (~PF3D7_0611200) : E\n', u'PF3D7_0611200 : (PF3D7_1337100) : E\nPF3D7_1139300 : (~PF3D7_0611200) : E\nPF3D7_1146600 : (~PF3D7_1139300)(~PF3D7_1408200) : E\nPF3D7_1222600 : (PF3D7_1146600)(~PF3D7_1317200) : E\nPF3D7_1317200 : (PF3D7_1408200)(~PF3D7_1146600)(~PF3D7_1356900) : E\nPF3D7_1337100 : (PF3D7_1139300 + PF3D7_1317200) : E\nPF3D7_1356900 : (~PF3D7_1222600) : E\nPF3D7_1408200 : (~PF3D7_0611200) : E\n', u'PF3D7_0611200 : (PF3D7_1337100) : E\nPF3D7_1139300 : (~PF3D7_0611200) : E\nPF3D7_1146600 : (~PF3D7_1139300)(~PF3D7_1408200) : E\nPF3D7_1222600 : (PF3D7_1146600)(~PF3D7_1317200) : E\nPF3D7_1317200 : (PF3D7_1139300 + PF3D7_1408200)(~PF3D7_1356900) : E\nPF3D7_1337100 : (PF3D7_1139300 + PF3D7_1317200) : E\nPF3D7_1356900 : (~PF3D7_1222600) : E\nPF3D7_1408200 : (~PF3D7_0611200) : E\n']
 
