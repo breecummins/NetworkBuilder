@@ -51,5 +51,5 @@ for k,(net,po) in enumerate(zip(networks,matchingPOs)):
     with open(INPUTDIR+'/networks/network{}.txt'.format(k),'w') as nf:
         nf.write(net)
     with open(INPUTDIR+'/POs/partialorder{}.json'.format(k),'w') as pf:
-        pf.write(po)
+        json.dump(po,pf)
 

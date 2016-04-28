@@ -1,5 +1,6 @@
-import fileparsers,sys,random
+import fileparsers,sys,random,json
 from databasecomputability import checkComputability
+import ExtremaPO as EPO
 
 def getRandomInt(n):
     return random.randrange(n)
@@ -72,16 +73,25 @@ def makeNearbyNetworks(starting_network_filename,numperturbations,source,target,
             with open(fname,'w') as f:
                 f.write(network_spec)
             networks.append(network_spec)
+    return node_list
 
+INPUTDIR = sys.argv[1]
+DSGRN = sys.argv[2]
 
-source,target,type_reg,score = fileparsers.parseLEMfile_pickbadnetworks(usepldLap=1,threshold=0,fname='/Users/bcummins/ProjectData/malaria/wrair2015_v2_fpkm-p1_s19_40hr_highest_ranked_genes/wrair2015_v2_fpkm-p1_s19_90tfs_top25_dljtk_lem_score_table.txt')
+source,target,type_reg,score = fileparsers.parseLEMfile_pickbadnetworks(usepldLap=1,threshold=0,fname='datafiles/wrair2015_v2_fpkm-p1_s19_90tfs_top25_dljtk_lem_score_table.txt')
 
-network_spec = "/Users/bcummins/GIT/DSGRN/networks/11D_2016_04_18_malaria40hrDuke_90TF_BACKWARDS_essential.txt"
+network_spec = DSGRN + "/networks/11D_2016_04_18_malaria40hrDuke_90TF_BACKWARDS_essential.txt"
 numperturbations = 100
 maxnodes = 11
 maxparams = 100000
-INPUTDIR = sys.argv[1]
 
-makeNearbyNetworks(network_spec,numperturbations,source,target,type_reg,savename = INPUTDIR+'/network_',maxnodes=maxnodes,maxparams=200000)
+labels = makeNearbyNetworks(network_spec,numperturbations,source,target,type_reg,savename = INPUTDIR+'/network_',maxnodes=maxnodes,maxparams=200000)
 
-# now make partial orders
+TIMESERIES="datafiles/wrair2015_v2_fpkm-p1_s19.tsv"
+TS_TYPE="row"  # or 'col', type of time series file format
+TS_TRUNCATION=42 #cut after 42 time units (NOT after index 42)
+SCALING_FACTOR=0.05   # between 0 and 1; 0 = most restrictive partial order
+
+pattern = EPO.makeJSONstring(TIMESERIES,TS_TYPE,labels,float(TS_TRUNCATION),n=1,scalingFactor=float(SCALING_FACTOR),step=0.01)
+json.dump(pattern,open(INPUTDIR+'/pattern.json','w'))
+
