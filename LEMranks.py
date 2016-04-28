@@ -76,12 +76,46 @@ def plotLEMranks(stats,title,use_pldLap):
     # plt.title = title+', median rank'
     # plt.show()
 
+def plotSampleHistogram(LEMRank_file,title="11D malaria 40 hr 90 TF permutations",use_pldLap=False):
+    means=[]
+    with open(LEMRank_file,'r') as sf:
+        means = [float(l.split('/')[0]) for l in sf]
+    n, bins, patches = plt.hist(means[1:], 100, normed=0, facecolor='black', alpha=0.4)
+    plt.hold('on')
+    plt.plot(means[0],5,marker='*',color='r',markersize=24)
+    if use_pldLap:
+        plt.xlabel('Average normalized edge rank from pld.Lap')
+    else:
+        plt.xlabel('Average normalized edge rank from sqrt loss / root')
+    plt.ylabel('# networks')
+    plt.title(title)
+    plt.axis([0,1,0,80])
+    plt.grid(True)
+    plt.show()
+
+            
+
+
+
 if __name__=="__main__":
-    results_file = sys.argv[1]
-    LEM_file = sys.argv[2]
-    save_file = sys.argv[3]
-    use_pldLap = eval(sys.argv[4]) 
-    plotresults = True
+    LEMRank_file = "/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/11D_2016_04_18_malaria40hrDuke_90TF_essential_shuffledgenes_scalingfactor_0-05_2500shuffles_LEMranks_sqrtdloss.txt"
+    plotSampleHistogram(LEMRank_file)
 
-    printLEMranks(results_file,LEM_file,save_file,use_pldLap,plotresults)
 
+    # results_file = sys.argv[1]
+    # LEM_file = sys.argv[2]
+    # save_file = sys.argv[3]
+    # use_pldLap = eval(sys.argv[4]) 
+    # plotresults = True
+
+    # printLEMranks(results_file,LEM_file,save_file,use_pldLap,plotresults)
+
+    # with open("/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/11D_2016_04_18_malaria40hrDuke_90TF_essential_shuffledgenes_scalingfactor_0-05_2500shuffles_LEMranks_sqrtdloss.txt","r") as rf:
+    #     nonzeros = []
+    #     for l in rf:
+    #         wordlist = l.split('/')
+    #         if float(wordlist[-1]) > 0:
+    #             nonzeros.append(float(wordlist[-1]))
+    # for s in sorted(nonzeros):
+    #     print s
+    # print len(nonzeros)
