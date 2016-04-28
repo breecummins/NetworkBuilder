@@ -8,7 +8,7 @@ SIGNATURES=$DSGRN/software/Signatures/bin/Signatures
 PATTERNMATCH=$DSGRN/software/PatternMatch/bin/PatternMatchDatabase
 
 DATETIME=`date +%Y_%m_%d_%H_%M_%S`
-INPUTDIR=./backward_networks$DATETIME
+INPUTDIR=./backward_inputfiles$DATETIME
 DATABASEDIR=./backward_databases$DATETIME
 OUTPUTDIR=./backward_outputfiles$DATETIME
 

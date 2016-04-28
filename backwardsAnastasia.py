@@ -83,7 +83,7 @@ source,target,type_reg,score = fileparsers.parseLEMfile_pickbadnetworks(usepldLa
 network_spec = DSGRN + "/networks/11D_2016_04_18_malaria40hrDuke_90TF_BACKWARDS_essential.txt"
 numperturbations = 100
 maxnodes = 11
-maxparams = 100000
+maxparams = 200000
 
 labels = makeNearbyNetworks(network_spec,numperturbations,source,target,type_reg,savename = INPUTDIR+'/network_',maxnodes=maxnodes,maxparams=200000)
 
