@@ -45,7 +45,7 @@ def addEdge(node_list,graph,reg,source,target,type_reg):
     return None,None
 
 
-def makeNearbyNetworks(starting_network_filename,numperturbations,source,target,type_reg,savename = 'network_',maxnodes=8,maxparams=200000):
+def makeNearbyNetworks(starting_network_filename,numperturbations,source,target,type_reg,savename = 'network_',maxparams=200000):
     # reset random seed for every run
     random.seed()
     # generate starting graph of labeled out-edges (activation and repression)
@@ -68,7 +68,7 @@ def makeNearbyNetworks(starting_network_filename,numperturbations,source,target,
         # extract the network spec from the graph and regulation type
         network_spec = fileparsers.createNetworkFile(node_list,graph,reg,essential,save2file=False)
         # check that network spec is all of unique, small enough, and computable, then write to file and save string for comparison
-        if (len(graph) <= int(maxnodes)) and (network_spec not in networks) and checkComputability(network_spec,maxparams):
+        if (network_spec not in networks) and checkComputability(network_spec,maxparams):
             fname = savename+str(len(networks))+'.txt'
             with open(fname,'w') as f:
                 f.write(network_spec)
@@ -82,10 +82,9 @@ source,target,type_reg,score = fileparsers.parseLEMfile_pickbadnetworks(usepldLa
 
 network_spec = DSGRN + "/networks/11D_2016_04_18_malaria40hrDuke_90TF_BACKWARDS_essential.txt"
 numperturbations = 100
-maxnodes = 11
-maxparams = 200000
+maxparams = 100000
 
-labels = makeNearbyNetworks(network_spec,numperturbations,source,target,type_reg,savename = INPUTDIR+'/network_',maxnodes=maxnodes,maxparams=200000)
+labels = makeNearbyNetworks(network_spec,numperturbations,source,target,type_reg,savename = INPUTDIR+'/network_',maxparams=200000)
 
 TIMESERIES="datafiles/wrair2015_v2_fpkm-p1_s19.tsv"
 TS_TYPE="row"  # or 'col', type of time series file format

@@ -1,4 +1,4 @@
-import subprocess
+import subprocess,sys
 
 def checkEdgeAdmissible(outedges,regulation):
     # THIS CODE CAN EASILY BECOME OBSOLETE!!!!
