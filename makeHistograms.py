@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 mpl.rcParams['font.size'] = 24
 import sys
+from math import isnan
 
 def histogramData(fname="stats.txt"):
     with open(fname,'r') as stats:
@@ -25,12 +26,12 @@ def makeHistogram(fname="stats.txt",histtitle='8D LEM network, 154 perturbations
     def plotHist(data,xlabel,title,sv,op):
         n, bins, patches = plt.hist([d*100 for d in data], 20, normed=0, facecolor='green', alpha=0.75)
         plt.hold('on')
-        plt.plot(sv,25,marker='*',color='r',markersize=24)
-        plt.plot(op,25,marker='*',color='k',markersize=24)
+        plt.plot(sv,12,marker='*',color='r',markersize=24)
+        plt.plot(op,12,marker='*',color='k',markersize=24)
         plt.xlabel(xlabel)
         plt.ylabel('# networks')
         plt.title(title)
-        plt.axis([0,100,0,30])
+        plt.axis([0,100,0,15])
         plt.grid(True)
         plt.show()
 
@@ -57,6 +58,7 @@ def makeScatterPlot(fname1="stats_0-00.txt",fname2="stats_0-05.txt",startingvals
 
     # plotScatter(MatchesOverParams1,MatchesOverParams2,title+', % matches over total parameters','scaling factor '+scaling_factor1,'scaling factor '+scaling_factor2,startingvals[0])
     # plotScatter(MatchesOverFCs1,MatchesOverFCs2,title+', % matches over stable FCs','scaling factor '+scaling_factor1,'scaling factor '+scaling_factor2,startingvals[1])
+    startingvals[2] = (MatchesOverParams2[0],FCoverParams2[0])
     plotScatter(MatchesOverParams2,FCoverParams2,title+', resolution '+scaling_factor2,'% matches over total parameters','% stable FCs',startingvals[2],otherpoint[2])
 
 def makeHistogram_multistable(fname="stats.txt"):
@@ -92,7 +94,7 @@ if __name__ == "__main__":
     # 0.00
     # [11.3,20.1,5.0]
 
-    # makeHistogram(fname=sys.argv[1],histtitle=sys.argv[2],scaling_factor=sys.argv[3],startingvals=eval(sys.argv[4]))#,otherpoint=eval(sys.argv[5]))
-    makeScatterPlot(*sys.argv[1:3],startingvals=eval(sys.argv[3]),title=sys.argv[4])#,otherpoint=eval(sys.argv[5]))
+    makeHistogram(fname=sys.argv[1],histtitle=sys.argv[2],scaling_factor=sys.argv[3],startingvals=eval(sys.argv[4]))#,otherpoint=eval(sys.argv[5]))
+    # makeScatterPlot(*sys.argv[1:3],startingvals=eval(sys.argv[3]),title=sys.argv[4])#,otherpoint=eval(sys.argv[5]))
 
     # makeHistogram_multistable(sys.argv[1])
