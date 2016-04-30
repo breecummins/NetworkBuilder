@@ -43,7 +43,7 @@ for NETWORK in $( ls $INPUTDIR/networks/*); do
 	# make results file
 	NUM=$(echo `basename $NETWORK` | sed -e s/[^0-9,_,-]//g);
 	RESULTSFILE="$OUTPUTDIR/results$NUM.json"
-	PATTERNFILE="$INPUTDIR/POs/pattern$NUM.json"
+	PATTERNFILE="$INPUTDIR/patterns/pattern$NUM.json"
 
 	qsub maxminsorting_helperscript.sh $PATTERNMATCH $NETWORK $PATTERNFILE $OUTPUTDIR $NUM $STABLEFCS $MULTISTABLE $NODES $RESULTSFILE 
 done
