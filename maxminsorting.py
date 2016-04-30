@@ -1,4 +1,4 @@
-import json, re, itertools
+import json, re, itertools, sys
 import ExtremaPO as EPO
 
 def ParseRowFile(fileName,node_list=None):
@@ -89,11 +89,11 @@ def makePatterns(networks,TIMESERIES,TS_TYPE,TS_TRUNCATION,scalingFactor,INPUTDI
     # return one pattern for each network
     return [uniquePOs[uniquegenes.index(g)] for g in genes]
 
-def makeNetworks(timeseries_file,ts_type,ts_truncation,network_spec,node_list=None,scalingFactors=[0.05,0.10,0.15],INPUTDIR=''):
+def makeNetworks(timeseries_file,ts_type,ts_truncation,network_spec,rankedgenes=None,scalingFactors=[0.05,0.10,0.15],INPUTDIR=''):
     network_node_list = []
     for line in network_spec.split("\n"):
         network_node_list.append(line.split()[0])
-    MaxMinData = getMaxMinData(timeseries_file,ts_type,ts_truncation,node_list)
+    MaxMinData = getMaxMinData(timeseries_file,ts_type,ts_truncation,rankedgenes)
     # print MaxMinData
     # print "\n"
     candidates = binMaxMinData(MaxMinData,network_node_list)
@@ -101,10 +101,10 @@ def makeNetworks(timeseries_file,ts_type,ts_truncation,network_spec,node_list=No
     # print "\n"
     networks = []
     # make all substitutions
-    for sub in itertools.product(*candidates):
-        if len(set(sub)) < len(sub):
+    for substitution in itertools.product(*candidates):
+        if len(set(substitution)) < len(substitution):
             continue # can't have the same gene twice
-        diff = dict((n,m) for (n,m) in zip(network_node_list,sub) if n != m)
+        diff = dict((n,m) for (n,m) in zip(network_node_list,substitution) if n != m)
         if len(diff) > 0:
             # the following snippet does all replacements at once, so you don't have to care about order of application
             pattern = re.compile("|".join(re.escape(k) for k in diff.keys()))
@@ -114,40 +114,38 @@ def makeNetworks(timeseries_file,ts_type,ts_truncation,network_spec,node_list=No
         sclabel = '{:.2f}'.format(sc).replace('.','-')
         patterns = makePatterns(networks,timeseries_file,ts_type,ts_truncation,sc,INPUTDIR)
         uniqpats = sorted(list(set(patterns)))
-        counts = dict((up,patterns.count(up)) for up in uniqpats)
+        counts = dict((networks[patterns.index(up)],(up,patterns.count(up))) for up in uniqpats)
 
         with open(INPUTDIR+'/counts{}.txt'.format(sclabel),'w') as cf:
             cf.write('Pattern# NetworkCount\n')
-            for k,(pat,count) in enumerate(counts.iteritems()):
+            for k,(net,(pat,count)) in enumerate(counts.iteritems()):
                 cf.write(str(k)+' '+str(count)+'\n')
-                with open(INPUTDIR+'/pattern{}_{}.json'.format(k,sclabel),'w') as pf:
+                with open(INPUTDIR+'/patterns/pattern{}_{}.json'.format(k,sclabel),'w') as pf:
                     json.dump(pat,pf)
+                with open(INPUTDIR+'/networks/network{}_{}.txt'.format(k,sclabel),'w') as nf:
+                    nf.write(net)
 
 
 
 if __name__ == "__main__":
-    timeseries_file = "datafiles/wrair2015_v2_fpkm-p1_s19.tsv"
-    ts_type = "row"
-    ts_truncation = 42
+    INPUTDIR = sys.argv[1]
+    network_spec_file = sys.argv[2]
+    ranked_genes_file = sys.argv[3]
+    timeseries_file = sys.argv[4]
+    ts_type = sys.argv[5]
+    ts_truncation = sys.argv[6]
+    scalingFactors = sys.argv[7]
 
-    # node_list = ['PF3D7_0100100','PF3D7_0100200','PF3D7_0100300','PF3D7_0100400','PF3D7_0100500','PF3D7_0100600','PF3D7_0100700','PF3D7_0100800','PF3D7_0100900','PF3D7_0101000','PF3D7_0101100','PF3D7_0101200','PF3D7_0101300','PF3D7_0101400','PF3D7_0101500','PF3D7_0101600','PF3D7_0101700','PF3D7_0101800','PF3D7_0101900','PF3D7_0102000','PF3D7_0102100','PF3D7_0102200','PF3D7_0102300','PF3D7_0102400','PF3D7_0102500','PF3D7_0102600','PF3D7_0102700','PF3D7_0102800','PF3D7_0102900','PF3D7_0103000','PF3D7_0103100','PF3D7_0103200','PF3D7_0103300','PF3D7_0103400','PF3D7_0103500','PF3D7_0103600','PF3D7_0103700','PF3D7_0103800','PF3D7_0103900','PF3D7_0104000']
-
-    # node_list = 200
-
-    node_list=[]
-    with open('datafiles/wrair-fpkm-p1_malaria_s19_DLxJTK_90putativeTFs.txt','r') as rf:
+    rankedgenes=[]
+    with open(ranked_genes_file,'r') as rf:
         rf.readline()
         for l in rf:
-            node_list.append(l.split()[0])
+            rankedgenes.append(l.split()[0])
 
-    with open('/Users/bcummins/GIT/DSGRN/networks/11D_2016_04_18_malaria40hrDuke_90TF_essential.txt','r') as f:
+    with open(network_spec_file,'r') as f:
         network_spec = f.read()  
-    # network_spec = "PF3D7_0100100 : PF3D7_0100200\nPF3D7_0100200 : (~PF3D7_0100100)"
 
-    scalingFactors = [0.05,0.10,0.15]
-    INPUTDIR = 'inputfiles'
-
-    makeNetworks(timeseries_file,ts_type,ts_truncation,network_spec,node_list,scalingFactors,INPUTDIR)
+    makeNetworks(timeseries_file,ts_type,ts_truncation,network_spec,rankedgenes,scalingFactors,INPUTDIR)
 
 
 
