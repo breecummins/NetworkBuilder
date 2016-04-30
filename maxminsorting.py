@@ -133,8 +133,8 @@ if __name__ == "__main__":
     ranked_genes_file = sys.argv[3]
     timeseries_file = sys.argv[4]
     ts_type = sys.argv[5]
-    ts_truncation = sys.argv[6]
-    scalingFactors = sys.argv[7]
+    ts_truncation = eval(sys.argv[6])
+    scalingFactors = eval(sys.argv[7])
 
     rankedgenes=[]
     with open(ranked_genes_file,'r') as rf:
