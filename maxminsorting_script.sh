@@ -16,7 +16,7 @@ RANKEDGENES="datafiles/wrair-fpkm-p1_malaria_s19_DLxJTK_90putativeTFs.txt"
 TIMESERIES="datafiles/wrair2015_v2_fpkm-p1_s19.tsv"
 TS_TYPE="row"  # or 'col', type of time series file format
 TS_TRUNCATION=42 #cut after x time units (NOT after index x)
-SCALING_FACTORS="[0.05,0.10,0.15]"   # list of 2 floats between 0 and 1; 0 = most restrictive partial order; 1 = least restrictive
+SCALING_FACTORS="[0.00,0.05,0.10,0.15]"   # list of 2 floats between 0 and 1; 0 = most restrictive partial order; 1 = least restrictive
 
 # make time stamped folders
 mkdir -p $INPUTDIR/networks $INPUTDIR/patterns $OUTPUTDIR/
