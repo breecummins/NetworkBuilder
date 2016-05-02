@@ -50,7 +50,7 @@ for k,(net,po) in enumerate(zip(networks,matchingPOs)):
     with open(INPUTDIR+'/networks/network{}.txt'.format(k),'w') as nf:
         nf.write(net)
     with open(INPUTDIR+'/POs1/pattern{}.json'.format(k),'w') as pf:
-        pf.write(po[0])
+        pf.write(po[0]) # OBSOLETE -- EPO returns dict now, dump to json instead of write
     with open(INPUTDIR+'/POs2/pattern{}.json'.format(k),'w') as pf:
-        pf.write(po[1])
+        pf.write(po[1]) # OBSOLETE -- EPO returns dict now, dump to json instead of write
 

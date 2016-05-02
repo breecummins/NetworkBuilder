@@ -21,7 +21,7 @@ ranked_genes = fileparsers.parseRankedGenes(fname=ranked_genes_file)[:numtopgene
 # record initial pattern
 pattern_spec = EPO.makeJSONstring(timeseries_file,ts_type,starting_node_list,ts_truncation,n=1,scalingFactor=scalingFactor,step=0.01)
 with open(INPUTDIR+'/POs/pattern0.json','w') as pf:
-    pf.write(pattern_spec)
+    pf.write(pattern_spec) # OBSOLETE -- EPO returns dict now, dump to json instead of write
 copyfile(starting_network_file, INPUTDIR+'/networks/network0.txt')
 shuffles = [range(numnodes)]
 
@@ -35,7 +35,7 @@ while len(shuffles) < numshuffles+1:
         labels = [ranked_genes[r] for r in rs]
         pattern_spec = EPO.makeJSONstring(timeseries_file,ts_type,labels,ts_truncation,n=1,scalingFactor=scalingFactor,step=0.01)
         with open(INPUTDIR+'/POs/pattern{}.json'.format(len(shuffles)),'w') as pf:
-            pf.write(pattern_spec)
+            pf.write(pattern_spec) # OBSOLETE -- EPO returns dict now, dump to json instead of write
         fileparsers.createNetworkFile(labels,starting_graph,starting_regulation,essential=essential,fname=INPUTDIR+'/networks/network{}.txt'.format(len(shuffles)),save2file=True)
         shuffles.append(rs)
 
