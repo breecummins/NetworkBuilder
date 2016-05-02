@@ -350,7 +350,8 @@ def ConvertToJSON(graph,sumList,TSLabels):
 	output["dimension"] = len(TSLabels)
 	# with open('pattern.json', 'w') as fp:
 	#   json.dump(output, fp)
-	return json.dumps(output)
+	# json.dumps(output)
+	return output
 
 # Parse file where genes are in columns output list of TS and list of TS labels 
 def ParseColFile(fileName):

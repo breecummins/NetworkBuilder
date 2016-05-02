@@ -89,7 +89,7 @@ def makePatterns(networks,TIMESERIES,TS_TYPE,TS_TRUNCATION,scalingFactor,INPUTDI
     # return one pattern for each network
     return [uniquePOs[uniquegenes.index(g)] for g in genes]
 
-def makeNetworks(timeseries_file,ts_type,ts_truncation,network_spec,rankedgenes=None,scalingFactors=[0.05,0.10,0.15],INPUTDIR=''):
+def makeNetworks(timeseries_file,ts_type,ts_truncation,network_spec,rankedgenes=None,scalingFactors=[0.00,0.05,0.10,0.15],INPUTDIR=''):
     network_node_list = []
     for line in network_spec.split("\n"):
         network_node_list.append(line.split()[0])
@@ -97,9 +97,9 @@ def makeNetworks(timeseries_file,ts_type,ts_truncation,network_spec,rankedgenes=
     # print MaxMinData
     # print "\n"
     candidates = binMaxMinData(MaxMinData,network_node_list)
-    # print candidates
-    # print "\n"
-    networks = []
+    print candidates
+    print "\n"
+    networks = [network_spec]
     # make all substitutions
     for substitution in itertools.product(*candidates):
         if len(set(substitution)) < len(substitution):
@@ -113,7 +113,10 @@ def makeNetworks(timeseries_file,ts_type,ts_truncation,network_spec,rankedgenes=
     for sc in scalingFactors:
         sclabel = '{:.2f}'.format(sc).replace('.','-')
         patterns = makePatterns(networks,timeseries_file,ts_type,ts_truncation,sc,INPUTDIR)
-        uniqpats = sorted(list(set(patterns)))
+        for p in patterns:
+            print p
+            print "\n"
+        uniqpats = [eval(q) for q in set([str(p) for p in patterns])]
         counts = dict((networks[patterns.index(up)],(up,patterns.count(up))) for up in uniqpats)
 
         with open(INPUTDIR+'/counts{}.txt'.format(sclabel),'w') as cf:
