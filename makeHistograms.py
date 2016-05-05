@@ -45,10 +45,10 @@ def makeScatterPlot(fname1="stats_0-00.txt",fname2="stats_0-05.txt",startingvals
     FCoverParams2, MatchesOverParams2,MatchesOverFCs2 = histogramData(fname2)
 
     def plotScatter(data1,data2,fulltitle,xlabel,ylabel,sv,op):
-        plt.scatter([d*100 for d in data1],[d*100 for d in data2],s=75,alpha=0.75)
+        plt.scatter([d*100 for d in data1],[d*100 for d in data2],s=75,alpha=0.75,color='green')
         plt.hold('on')
         plt.plot(sv[0],sv[1],marker='*',color='r',markersize=24)
-        plt.plot(op[0],op[1],marker='*',color='k',markersize=24)
+        # plt.plot(op[0],op[1],marker='*',color='k',markersize=24)
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
         plt.title(fulltitle)
@@ -58,7 +58,7 @@ def makeScatterPlot(fname1="stats_0-00.txt",fname2="stats_0-05.txt",startingvals
 
     # plotScatter(MatchesOverParams1,MatchesOverParams2,title+', % matches over total parameters','scaling factor '+scaling_factor1,'scaling factor '+scaling_factor2,startingvals[0])
     # plotScatter(MatchesOverFCs1,MatchesOverFCs2,title+', % matches over stable FCs','scaling factor '+scaling_factor1,'scaling factor '+scaling_factor2,startingvals[1])
-    startingvals[2] = (MatchesOverParams2[0],FCoverParams2[0])
+    startingvals[2] = (MatchesOverParams2[0]*100,FCoverParams2[0]*100)
     plotScatter(MatchesOverParams2,FCoverParams2,title+', resolution '+scaling_factor2,'% matches over total parameters','% stable FCs',startingvals[2],otherpoint[2])
 
 def makeHistogram_multistable(fname="stats.txt"):
@@ -118,7 +118,7 @@ def makeScatterPlot_maxminsorting():
     nummatches0_15, numnetworks0_15 = sortByMatches(nummatches0_15,numnetworks0_15)
 
 
-    def plotScatter(data1,data2,data3,sv):
+    def plotScatter1(data1,data2,data3,sv):
         plt.scatter(data1, data2,s=data3,alpha=0.75)
         plt.hold('on')
         plt.plot(sv[0],sv[1],marker='*',color='r',markersize=24)
@@ -130,9 +130,9 @@ def makeScatterPlot_maxminsorting():
 
     plt.figure()
     plt.hold('on')
-    plotScatter([0.05]*len(nummatches0_05),nummatches0_05,numnetworks0_05,[0.05,1146])
-    plotScatter([0.10]*len(nummatches0_10),nummatches0_10,numnetworks0_10,[0.10,1302])
-    plotScatter([0.15]*len(nummatches0_15),nummatches0_15,numnetworks0_15,[0.15,1378])
+    plotScatter1([0.05]*len(nummatches0_05),nummatches0_05,numnetworks0_05,[0.05,1146])
+    plotScatter1([0.10]*len(nummatches0_10),nummatches0_10,numnetworks0_10,[0.10,1302])
+    plotScatter1([0.15]*len(nummatches0_15),nummatches0_15,numnetworks0_15,[0.15,1378])
     plt.show()
 
 
@@ -144,7 +144,7 @@ if __name__ == "__main__":
     # [11.3,20.1,5.0]
 
     # makeHistogram(fname=sys.argv[1],histtitle=sys.argv[2],scaling_factor=sys.argv[3],startingvals=eval(sys.argv[4]))#,otherpoint=eval(sys.argv[5]))
-    # makeScatterPlot(*sys.argv[1:3],startingvals=eval(sys.argv[3]),title=sys.argv[4])#,otherpoint=eval(sys.argv[5]))
+    makeScatterPlot(*sys.argv[1:3],startingvals=eval(sys.argv[3]),title=sys.argv[4])#,otherpoint=eval(sys.argv[5]))
 
     # makeHistogram_multistable(sys.argv[1])
-    makeScatterPlot_maxminsorting()
+    # makeScatterPlot_maxminsorting()
