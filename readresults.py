@@ -101,8 +101,8 @@ def makestats_maxminsorting(fname='results.json',savename='stats.txt',countname=
             sn.write(str(pc) + '/' + str(fcpc) + '/' + str(fcpm) + '/{}'.format(counts[indexmap[k]])+"\n")
 
 if __name__=='__main__':
-    # makestats(sys.argv[1],sys.argv[2]) 
-    makestats_maxminsorting(*sys.argv[1:])   
+    makestats(sys.argv[1],sys.argv[2]) 
+    # makestats_maxminsorting(*sys.argv[1:])   
     # makestats_multistability(sys.argv[1],sys.argv[2]) 
     # print json.load(open(sys.argv[1],'r'))[0]["Network"]
 

@@ -62,7 +62,7 @@ def makeNearbyNetworks(starting_network_filename,numperturbations,source,target,
         # add two edges (or swap regulation of edges) to the starting network
         success = 0
         while success < 2:
-            graph,reg = addEdge(node_list,sg,sr,source,target,type_reg)
+            graph,reg = addEdge(node_list,sg,sr,source,target,type_reg) # this is a bug -- I don't pass in the altered graph and only add one edge (but it's what I ran in the simulation)
             if graph is not None:
                 success += 1
         # extract the network spec from the graph and regulation type

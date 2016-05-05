@@ -150,6 +150,24 @@ if __name__ == "__main__":
 
     makeNetworks(timeseries_file,ts_type,ts_truncation,network_spec,rankedgenes,scalingFactors,INPUTDIR)
 
+    # NETWORKFILE="/Users/bcummins/GIT/DSGRN/networks/11D_2016_04_18_malaria40hrDuke_90TF_essential.txt"
+    # RANKEDGENES="datafiles/wrair-fpkm-p1_malaria_s19_DLxJTK_90putativeTFs.txt"
+    # TIMESERIES="datafiles/wrair2015_v2_fpkm-p1_s19.tsv"
+    # TS_TYPE="row"  # or 'col', type of time series file format
+    # TS_TRUNCATION=42 #cut after x time units (NOT after index x)
+
+    # rankedgenes=[]
+    # with open(RANKEDGENES,'r') as rf:
+    #     rf.readline()
+    #     for l in rf:
+    #         rankedgenes.append(l.split()[0])
+
+    # with open(NETWORKFILE,'r') as f:
+    #     network_spec = f.read()  
+
+    # makeNetworks(TIMESERIES,TS_TYPE,TS_TRUNCATION,network_spec,rankedgenes[:50])
+    # makeNetworks(TIMESERIES,TS_TYPE,TS_TRUNCATION,network_spec,rankedgenes[:25])
+
 
 
 
