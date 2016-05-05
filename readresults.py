@@ -81,8 +81,28 @@ def makestats_multiplefile(DIR='outfiles/'):
         else:
             print str(pc) + '/' + str(fcpc) + '/' + str(fcpm) + '/NaN'
 
+def makestats_maxminsorting(fname='results.json',savename='stats.txt',countname='counts.txt',indexname="indexmap.txt"):
+    with open(fname,'r') as f:
+        listofnetworks = json.load(f)
+    with open(countname,'r') as c:
+        counts = []
+        c.readline()
+        for l in c:
+            counts.append(int(l.split()[1]))
+    with open(indexname,'r') as i:
+        indexmap = []
+        for l in i:
+            indexmap.append(int(l.split('_')[0]))
+    with open(savename,'w') as sn:
+        for k,n in enumerate(listofnetworks):
+            pc = n["ParameterCount"]
+            fcpc = n["StableFCParameterCount"]
+            fcpm = n["StableFCMatchesParameterCount"]
+            sn.write(str(pc) + '/' + str(fcpc) + '/' + str(fcpm) + '/{}'.format(counts[indexmap[k]])+"\n")
+
 if __name__=='__main__':
-    makestats(sys.argv[1],sys.argv[2]) 
+    # makestats(sys.argv[1],sys.argv[2]) 
+    makestats_maxminsorting(*sys.argv[1:])   
     # makestats_multistability(sys.argv[1],sys.argv[2]) 
     # print json.load(open(sys.argv[1],'r'))[0]["Network"]
 

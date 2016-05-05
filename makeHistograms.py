@@ -87,6 +87,55 @@ def makeHistogram_multistable(fname="stats.txt"):
 
     plotHist(MultioverParams,'% multistability','{} random perturbations'.format(len(MultioverParams)-1),100)
 
+def scatterData_maxminsorting(fname="stats.txt"):
+    with open(fname,'r') as stats:
+        nummatches=[]
+        numnetworks=[]
+        for line in stats:
+            nums = line.split('/')
+            nummatches.append(int(nums[2]))
+            numnetworks.append(int(nums[3]))
+    return nummatches, numnetworks
+
+def makeScatterPlot_maxminsorting():
+    nummatches0_05, numnetworks0_05 = scatterData_maxminsorting('/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/11D_2016_04_18_malaria40hrDuke_90TF_essential_maxminsorting_scalingfactor_0-05_corrected_summarystats.txt')
+    nummatches0_10, numnetworks0_10 = scatterData_maxminsorting('/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/11D_2016_04_18_malaria40hrDuke_90TF_essential_maxminsorting_scalingfactor_0-10_corrected_summarystats.txt')
+    nummatches0_15, numnetworks0_15 = scatterData_maxminsorting('/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/11D_2016_04_18_malaria40hrDuke_90TF_essential_maxminsorting_scalingfactor_0-15_corrected_summarystats.txt')
+
+    def sortByMatches(matches,networks):
+        uniqnummatches=[]
+        networkcounts=[]
+        for nm,nn in zip(matches,networks):
+            if nm not in uniqnummatches:
+                uniqnummatches.append(nm)
+                networkcounts.append(nn)
+            else:
+                networkcounts[uniqnummatches.index(nm)] += nn
+        return uniqnummatches, networkcounts
+
+    nummatches0_05, numnetworks0_05 = sortByMatches(nummatches0_05,numnetworks0_05)
+    nummatches0_10, numnetworks0_10 = sortByMatches(nummatches0_10,numnetworks0_10)
+    nummatches0_15, numnetworks0_15 = sortByMatches(nummatches0_15,numnetworks0_15)
+
+
+    def plotScatter(data1,data2,data3,sv):
+        plt.scatter(data1, data2,s=data3,alpha=0.75)
+        plt.hold('on')
+        plt.plot(sv[0],sv[1],marker='*',color='r',markersize=24)
+        plt.xlabel('Scaling factor')
+        plt.ylabel('# pattern matches')
+        plt.title('Substitutions from similar time series')
+        # plt.axis([0,100,0,100])
+        plt.grid(True)
+
+    plt.figure()
+    plt.hold('on')
+    plotScatter([0.05]*len(nummatches0_05),nummatches0_05,numnetworks0_05,[0.05,1146])
+    plotScatter([0.10]*len(nummatches0_10),nummatches0_10,numnetworks0_10,[0.10,1302])
+    plotScatter([0.15]*len(nummatches0_15),nummatches0_15,numnetworks0_15,[0.15,1378])
+    plt.show()
+
+
 if __name__ == "__main__":
     # EXAMPLE INPUTS FOR HISTOGRAM: 
     # /Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/8D_2016_04_11_malaria40hr_50TF_top25_T0-05_essential_scalingfactor0-00_patternmatches_summarystats.txt
@@ -94,7 +143,8 @@ if __name__ == "__main__":
     # 0.00
     # [11.3,20.1,5.0]
 
-    makeHistogram(fname=sys.argv[1],histtitle=sys.argv[2],scaling_factor=sys.argv[3],startingvals=eval(sys.argv[4]))#,otherpoint=eval(sys.argv[5]))
+    # makeHistogram(fname=sys.argv[1],histtitle=sys.argv[2],scaling_factor=sys.argv[3],startingvals=eval(sys.argv[4]))#,otherpoint=eval(sys.argv[5]))
     # makeScatterPlot(*sys.argv[1:3],startingvals=eval(sys.argv[3]),title=sys.argv[4])#,otherpoint=eval(sys.argv[5]))
 
     # makeHistogram_multistable(sys.argv[1])
+    makeScatterPlot_maxminsorting()

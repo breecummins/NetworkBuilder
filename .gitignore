@@ -1,4 +1,8 @@
 *.pyc
 *.sh.o*
 *.sh.po*
-  
+*.json
+*.db  
+*.gv
+*.txt
+*.log
