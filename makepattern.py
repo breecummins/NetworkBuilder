@@ -1,5 +1,5 @@
 import ExtremaPO as EPO
-import os,json
+import os,json,sys
 
 NETWORK_FILE = sys.argv[1] 
 TIMESERIES_FILE  = sys.argv[2]  
