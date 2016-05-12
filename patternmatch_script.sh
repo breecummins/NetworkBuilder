@@ -3,7 +3,7 @@
 # Perform a pattern match analysis of Stable FC nodes
 
 DSGRN=$1 #/share/data/bcummins/DSGRN
-NETWORKS=$2 #$DSGRN/networks/6D*Francis*
+NETWORKS=$2 # "$DSGRN/networks/6D*Francis*" # be sure to use quotes or wild card will expand
 TIMESERIES=$3 #"datafiles/wrair2015_v2_fpkm-p1_s19.tsv"
 TS_TYPE=$4 #"row" or "col", type of time series file format
 TS_TRUNCATION=$5 #42 #cut after 42 time units (NOT after index 42); -1 does not cut
@@ -25,10 +25,10 @@ for n in $( ls $NETWORKS ); do
 	NETWORKFILE="$INPUTDIR/networks/$(basename $n)"
 	BNAME=$(basename $n)
 	NAME="${BNAME%.*}"
-	PATTERNFILE="$INPUTDIR/patterns/$NAME_pattern.json"
+	PATTERNFILE="$INPUTDIR/patterns/pattern_$NAME.json"
 	python makepattern.py $n $TIMESERIES $TS_TYPE $TS_TRUNCATION $SCALING_FACTOR $PATTERNFILE # could add additional for loop for multiple scaling factors
 	DATABASENAME="$DATABASEDIR/$NAME.db";
 	RESULTSFILE="$OUTPUTDIR/results_$NAME.json"
-	qsub script_for_qsub.sh $SIGNATURES $NETWORKFILE $DATABASENAME $PATTERNMATCH $PATTERNFILE $OUTPUTDIR $RESULTSFILE $NAME
+	# qsub script_for_qsub.sh $SIGNATURES $NETWORKFILE $DATABASENAME $PATTERNMATCH $PATTERNFILE $OUTPUTDIR $RESULTSFILE $NAME
 done
 
