@@ -330,7 +330,7 @@ def CreateLabel(sumList):
 	for ndx in range(0,d):
 		lastEvent = max(sumList[ndx][1])
 		indexOfLE = sumList[ndx][1].index(lastEvent)
-		if indexOfLE%2 == 1:   # last event was min, since ordered min,max,min,max,...
+		if indexOfLE%2 == 1:   # last event was max, since ordered min,max,min,max,...
 			label[2*d - 1 - ndx] = 1
 			label[d - 1 - ndx] = 0
 		else:
@@ -453,27 +453,53 @@ def makeJSONstring(dataFileName,fileType,labels,timeCutOff=-1,n=1,scalingFactor=
 if __name__ == "__main__":	
 	# # # Prints the PO's from the conversion to S.H.'s graph class
 	# # GraphToDigraph(graph)
+
+	TIMESERIES="datafiles/haase-fpkm-p1_yeast_s29.txt" #wrair2015_v2_fpkm-p1_s19.tsv"
+	TS_TYPE="row"  # or 'col', type of time series file format
+	TS_TRUNCATION=85 #42 #cut after 42 time units (NOT after index 42)
+	networkname = "4D_2016_05_17_simple_wavepool"
+	labels = []
+	with open('/Users/bcummins/GIT/DSGRN/networks/'+ networkname + '.txt','r') as f:
+		for l in f:
+			labels.append(l.split()[0])
+	json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.00,step=0.01),open(networkname + '_pattern0-00.json','w'))	
+	json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.05,step=0.01),open(networkname + '_pattern0-05.json','w'))
+	json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.10,step=0.01),open(networkname + '_pattern0-10.json','w'))
+	json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.15,step=0.01),open(networkname + '_pattern0-15.json','w'))
+
+	# labels = []
+	# with open('/Users/bcummins/GIT/DSGRN/networks/11D_2016_04_18_malaria40hrDuke_90TF_essential.txt','r') as f:
+	# 	for l in f:
+	# 		labels.append(l.split()[0])
 	# TIMESERIES="datafiles/wrair2015_v2_fpkm-p1_s19.tsv"
 	# TS_TYPE="row"  # or 'col', type of time series file format
 	# TS_TRUNCATION=42 #cut after 42 time units (NOT after index 42)
-	# TIMESERIES="datafiles/haase-fpkm-p1_yeast_s29.txt" #wrair2015_v2_fpkm-p1_s19.tsv"
-	# TS_TYPE="row"  # or 'col', type of time series file format
-	# TS_TRUNCATION=85 #42 #cut after 42 time units (NOT after index 42)
-	# # labels = ["FKH1","SPT21","PLM2","WTM2","SWI4","NDD1","HCM1"]
-	# labels = ["SWI4","HCM1","NDD1","SWI5","YOX1"]
-	# # labels = ["SWI4","HCM1","NDD1","ACE2","YHP1"]
+	# json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.00,step=0.01),open('11D_2016_04_18_malaria40hrDuke_90TF_pattern0-00.json','w'))	
+	# json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.05,step=0.01),open('11D_2016_04_18_malaria40hrDuke_90TF_pattern0-05.json','w'))
+	# json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.10,step=0.01),open('11D_2016_04_18_malaria40hrDuke_90TF_pattern0-10.json','w'))
+	# json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.15,step=0.01),open('11D_2016_04_18_malaria40hrDuke_90TF_pattern0-15.json','w'))
 
-	labels = []
-	with open('/Users/bcummins/GIT/DSGRN/networks/11D_2016_04_18_malaria40hrDuke_90TF_essential.txt','r') as f:
-		for l in f:
-			labels.append(l.split()[0])
-	TIMESERIES="datafiles/wrair2015_v2_fpkm-p1_s19.tsv"
-	TS_TYPE="row"  # or 'col', type of time series file format
-	TS_TRUNCATION=42 #cut after 42 time units (NOT after index 42)
-	 
+	import matplotlib
+	matplotlib.rcParams['font.size'] = 24
+	if TS_TYPE == 'col':
+		TSList,TSLabels,timeStepList = ParseColFile(TIMESERIES)
+	elif TS_TYPE == 'row':
+		TSList,TSLabels,timeStepList = ParseRowFile(TIMESERIES)
 
-	json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.00,step=0.01),open('11D_2016_04_18_malaria40hrDuke_90TF_pattern0-00.json','w'))	
-	json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.05,step=0.01),open('11D_2016_04_18_malaria40hrDuke_90TF_pattern0-05.json','w'))
-	json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.10,step=0.01),open('11D_2016_04_18_malaria40hrDuke_90TF_pattern0-10.json','w'))
-	json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.15,step=0.01),open('11D_2016_04_18_malaria40hrDuke_90TF_pattern0-15.json','w'))
+	newTSList = PickNetworkTS(TSList,TSLabels,labels)
 
+	# TS_TRUNCATION = 120
+	if TS_TRUNCATION != float(-1):
+		TSList = TruncateTS(newTSList,timeStepList,TS_TRUNCATION)
+		timeStepList = timeStepList[:timeStepList.index(TS_TRUNCATION)+1]
+	for ts in TSList:
+		shiftts = [t - min(ts) for t in ts]
+		newts = [float(s)/max(shiftts) for s in shiftts]
+		plt.plot(timeStepList,newts,linewidth=2)
+		plt.hold('on')
+	# print newtimeStepList
+	plt.axis([10,85,0,1])
+	plt.xlabel('Minutes')
+	plt.ylabel('Normalized expression level')
+	plt.legend(labels)
+	plt.show()
