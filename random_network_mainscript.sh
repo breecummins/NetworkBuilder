@@ -4,10 +4,9 @@
 
 STARTINGFILE=$1 # network spec file: /Users/bcummins/GIT/DSGRN/networks/5D_2016_02_08_cancer_withRP_essential.txt
 NUMNETWORKS=$2 # number of networks: 10000
-MAXNODES=$3 # max number of nodes to allow (it is possible to choose too few nodes so that networks can never finish generating)
-MAXPARAMS=$4 # max number of parameters per network to allow (networks might not finish generating if this is too small)
-DSGRN=$5 #/Users/bcummins/GIT/DSGRN
-HELPERSCRIPT=$6 #random_network_helperscript.sh
+MAXPARAMS=$3 # max number of parameters per network to allow (networks might not finish generating if this is too small)
+DSGRN=$4 #/Users/bcummins/GIT/DSGRN
+HELPERSCRIPT=$5 #random_network_helperscript.sh
 
 SIGNATURES=$DSGRN/software/Signatures/bin/Signatures
 
@@ -20,7 +19,7 @@ mkdir $INPUTDIR/
 
 # mkdir -p $DATABASEDIR/ $OUTPUTDIR/ $INPUTDIR/
 
-python ./random_networkbuilder.py $STARTINGFILE $NUMNETWORKS "$INPUTDIR/network_" $MAXNODES $MAXPARAMS
+python ./random_networkbuilder.py $STARTINGFILE $NUMNETWORKS "$INPUTDIR/network_" $MAXPARAMS
 
 # use xargs below since the number of files can be large
 for NETWORK in $( echo $INPUTDIR/* | xargs ls ); do
