@@ -60,13 +60,13 @@ def perturbNetwork(graph,reg):
         keepgoing = getRandomInt(2)
     return graph,reg
 
-def makeNearbyNetworks(starting_network_filename,numperturbations,savename = 'network_',maxnodes=8,maxparams=200000):
+def makeNearbyNetworks(starting_network_filename,numperturbations,savename = 'network_',maxparams=200000):
     # reset random seed for every run
     random.seed()
     # generate starting graph of labeled out-edges (activation and repression)
-    _,starting_graph,starting_regulation,_ = fileparsers.getGraphFromNetworkFile(network_filename=starting_network_filename)
+    node_list,starting_graph,starting_regulation,_ = fileparsers.getGraphFromNetworkFile(network_filename=starting_network_filename)
     # begin analysis with starting network spec -- change var names, save to file, and initialize networks with [networkstr]
-    node_list = ['x'+str(k) for k in range(len(starting_graph))]
+    # node_list = ['x'+str(k) for k in range(len(starting_graph))]
     essential = [True] * len(starting_graph)
     fname = savename+str(0)+'.txt'  
     networks = [fileparsers.createNetworkFile(node_list,starting_graph,starting_regulation,essential,fname=fname,save2file=True)]
@@ -79,11 +79,12 @@ def makeNearbyNetworks(starting_network_filename,numperturbations,savename = 'ne
         # perturb the starting network
         graph,reg = perturbNetwork(sg,sr)
         # extract the network spec from the graph and regulation type
-        node_list = ['x'+str(k) for k in range(len(graph))]
+        # node_list = ['x'+str(k) for k in range(len(graph))]
+        new_node_list = node_list + ['x'+str(k) for k in range(len(graph)-len(node_list))]
         essential = [True] * len(graph)
-        network_spec = fileparsers.createNetworkFile(node_list,graph,reg,essential,save2file=False)
+        network_spec = fileparsers.createNetworkFile(new_node_list,graph,reg,essential,save2file=False)
         # check that network spec is all of unique, small enough, and computable, then write to file and save string for comparison
-        if (len(graph) <= int(maxnodes)) and (network_spec not in networks) and checkComputability(network_spec,maxparams):
+        if (network_spec not in networks) and checkComputability(network_spec,maxparams):
             fname = savename+str(len(networks))+'.txt'
             with open(fname,'w') as f:
                 f.write(network_spec)

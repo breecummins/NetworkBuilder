@@ -480,7 +480,7 @@ if __name__ == "__main__":
 	# json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.15,step=0.01),open('11D_2016_04_18_malaria40hrDuke_90TF_pattern0-15.json','w'))
 
 	import matplotlib
-	matplotlib.rcParams['font.size'] = 24
+	matplotlib.rcParams['font.size'] = 52
 	if TS_TYPE == 'col':
 		TSList,TSLabels,timeStepList = ParseColFile(TIMESERIES)
 	elif TS_TYPE == 'row':
@@ -495,7 +495,7 @@ if __name__ == "__main__":
 	for ts in TSList:
 		shiftts = [t - min(ts) for t in ts]
 		newts = [float(s)/max(shiftts) for s in shiftts]
-		plt.plot(timeStepList,newts,linewidth=2)
+		plt.plot(timeStepList,newts,linewidth=4)
 		plt.hold('on')
 	# print newtimeStepList
 	plt.axis([10,85,0,1])
