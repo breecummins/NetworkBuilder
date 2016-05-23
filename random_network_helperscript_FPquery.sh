@@ -26,12 +26,10 @@ mpiexec --mca mpi_preconnect_mpi 1 -np $NSLOTS -x LD_LIBRARY_PATH $1 $2 $3
 if [ ! -f $3 ]; then echo "Database $NUM did not compute\n"; cat $2; exit 1; fi 	
 
 # otherwise, analyze
-FPQUERY = $DSGRN/software/FPQuery/FPQuery
+FPQUERY=$DSGRN/software/FPQuery/FPQuery
 
 $FPQUERY $3 E2F 3 3 5 Rb 0 0 > "$4/stateP$NUM.txt"
-
 $FPQUERY $3 E2F 0 0 Rb 1 1 > "$4/stateQ$NUM.txt"
-
 $FPQUERY $3 E2F 0 0 Rb 1 1 E2F 3 3 Rb 0 0 > "$4/bistability$NUM.txt"
 
 # yank summary results

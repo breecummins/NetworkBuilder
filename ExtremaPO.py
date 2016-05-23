@@ -283,6 +283,7 @@ def PullEventComps(sumList,maxEps,step,n):
 		for event in range(0,2*n):
 			eventCompList[ndx].append(tsList[0][maxEps][tsList[1][event]])
 		ndx += 1
+	print eventCompList
 	return eventCompList
 
 # Build partial order list indexed by epsilon. Each PO is a list indexed by 1st ts highest min, 1st ts highest max, 
@@ -432,6 +433,8 @@ def makeJSONstring(dataFileName,fileType,labels,timeCutOff=-1,n=1,scalingFactor=
 	elif fileType == 'row':
 		TSList,TSLabels,timeStepList = ParseRowFile(dataFileName)
 
+	print timeStepList[:timeCutOff]
+
 	newTSLabels = labels
 	newTSList = PickNetworkTS(TSList,TSLabels,newTSLabels)
 
@@ -443,6 +446,7 @@ def makeJSONstring(dataFileName,fileType,labels,timeCutOff=-1,n=1,scalingFactor=
 	maxEps = FindMaxEps(sumList)
 	if scalingFactor >= 0 and scalingFactor < 1:
 		maxEps = int(scalingFactor*maxEps)
+	print maxEps
 	eventCompList = PullEventComps(sumList,maxEps,step,n)
 	# print eventCompList
 	# print "\n"
@@ -462,9 +466,9 @@ if __name__ == "__main__":
 	with open('/Users/bcummins/GIT/DSGRN/networks/'+ networkname + '.txt','r') as f:
 		for l in f:
 			labels.append(l.split()[0])
-	json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.00,step=0.01),open(networkname + '_pattern0-00.json','w'))	
-	json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.05,step=0.01),open(networkname + '_pattern0-05.json','w'))
-	json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.10,step=0.01),open(networkname + '_pattern0-10.json','w'))
+	# json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.00,step=0.01),open(networkname + '_pattern0-00.json','w'))	
+	# json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.05,step=0.01),open(networkname + '_pattern0-05.json','w'))
+	# json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.10,step=0.01),open(networkname + '_pattern0-10.json','w'))
 	json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.15,step=0.01),open(networkname + '_pattern0-15.json','w'))
 
 	# labels = []
@@ -479,27 +483,27 @@ if __name__ == "__main__":
 	# json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.10,step=0.01),open('11D_2016_04_18_malaria40hrDuke_90TF_pattern0-10.json','w'))
 	# json.dump(makeJSONstring(TIMESERIES,TS_TYPE,labels,TS_TRUNCATION,n=1,scalingFactor=0.15,step=0.01),open('11D_2016_04_18_malaria40hrDuke_90TF_pattern0-15.json','w'))
 
-	import matplotlib
-	matplotlib.rcParams['font.size'] = 52
-	if TS_TYPE == 'col':
-		TSList,TSLabels,timeStepList = ParseColFile(TIMESERIES)
-	elif TS_TYPE == 'row':
-		TSList,TSLabels,timeStepList = ParseRowFile(TIMESERIES)
+	# import matplotlib
+	# matplotlib.rcParams['font.size'] = 52
+	# if TS_TYPE == 'col':
+	# 	TSList,TSLabels,timeStepList = ParseColFile(TIMESERIES)
+	# elif TS_TYPE == 'row':
+	# 	TSList,TSLabels,timeStepList = ParseRowFile(TIMESERIES)
 
-	newTSList = PickNetworkTS(TSList,TSLabels,labels)
+	# newTSList = PickNetworkTS(TSList,TSLabels,labels)
 
-	# TS_TRUNCATION = 120
-	if TS_TRUNCATION != float(-1):
-		TSList = TruncateTS(newTSList,timeStepList,TS_TRUNCATION)
-		timeStepList = timeStepList[:timeStepList.index(TS_TRUNCATION)+1]
-	for ts in TSList:
-		shiftts = [t - min(ts) for t in ts]
-		newts = [float(s)/max(shiftts) for s in shiftts]
-		plt.plot(timeStepList,newts,linewidth=4)
-		plt.hold('on')
-	# print newtimeStepList
-	plt.axis([10,85,0,1])
-	plt.xlabel('Minutes')
-	plt.ylabel('Normalized expression level')
-	plt.legend(labels)
-	plt.show()
+	# # TS_TRUNCATION = 120
+	# if TS_TRUNCATION != float(-1):
+	# 	TSList = TruncateTS(newTSList,timeStepList,TS_TRUNCATION)
+	# 	timeStepList = timeStepList[:timeStepList.index(TS_TRUNCATION)+1]
+	# for ts in TSList:
+	# 	shiftts = [t - min(ts) for t in ts]
+	# 	newts = [float(s)/max(shiftts) for s in shiftts]
+	# 	plt.plot(timeStepList,newts,linewidth=4)
+	# 	plt.hold('on')
+	# # print newtimeStepList
+	# plt.axis([10,85,0,1])
+	# plt.xlabel('Minutes')
+	# plt.ylabel('Normalized expression level')
+	# plt.legend(labels)
+	# plt.show()
