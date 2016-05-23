@@ -15,7 +15,7 @@ INPUTDIR=./random_networks$DATETIME
 DATABASEDIR=./random_databases$DATETIME
 OUTPUTDIR=./random_outputfiles$DATETIME
 
-mkdir $INPUTDIR/
+mkdir $INPUTDIR/ $DATABASEDIR/ $OUTPUTDIR/
 
 # mkdir -p $DATABASEDIR/ $OUTPUTDIR/ $INPUTDIR/
 
