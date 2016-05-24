@@ -2,7 +2,7 @@ import matplotlib.mlab as mlab
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 mpl.rcParams['font.size'] = 24
-import sys
+import sys,json
 from math import isnan
 
 def histogramData(fname="stats.txt"):
@@ -135,6 +135,37 @@ def makeScatterPlot_maxminsorting():
     plotScatter1([0.15]*len(nummatches0_15),nummatches0_15,numnetworks0_15,[0.15,1378])
     plt.show()
 
+def makehist_cancerpercentages(fname='results.json'):
+    percentP=[]
+    percentQ=[]
+    percentBi=[]
+    with open(fname,'r') as f:
+        listofnetworks = json.load(f)   
+    for network in listofnetworks:
+        pc = network["ParameterCount"]
+        p = network["StateP"]
+        q = network["StateQ"]
+        bi = network["BistablePQ"]
+        percentP.append((float(p) -float(bi))/float(pc))
+        percentQ.append((float(q) -float(bi))/float(pc))
+        percentBi.append(float(bi)/float(pc))
+
+    def plotHist(data,xlabel,title,sv):
+        n, bins, patches = plt.hist([d*100 for d in data], 50, normed=0, facecolor='green', alpha=0.75)
+        plt.hold('on')
+        plt.plot(sv,100,marker='*',color='r',markersize=24)
+        plt.xlabel(xlabel)
+        plt.ylabel('# networks')
+        plt.title(title)
+        plt.axis([0,100,0,600])
+        plt.grid(True)
+        plt.show()
+
+    plotHist(percentP,"% state P without Q","",percentP[0]*100)
+    plotHist(percentQ,"% state Q without P","",percentQ[0]*100)
+    plotHist(percentBi,"% state P and Q","",percentBi[0]*100)
+
+
 
 if __name__ == "__main__":
     # EXAMPLE INPUTS FOR HISTOGRAM: 
@@ -144,7 +175,9 @@ if __name__ == "__main__":
     # [11.3,20.1,5.0]
 
     # makeHistogram(fname=sys.argv[1],histtitle=sys.argv[2],scaling_factor=sys.argv[3],startingvals=eval(sys.argv[4]))#,otherpoint=eval(sys.argv[5]))
-    makeScatterPlot(*sys.argv[1:3],startingvals=eval(sys.argv[3]),title=sys.argv[4])#,otherpoint=eval(sys.argv[5]))
+    # makeScatterPlot(*sys.argv[1:3],startingvals=eval(sys.argv[3]),title=sys.argv[4])#,otherpoint=eval(sys.argv[5]))
 
     # makeHistogram_multistable(sys.argv[1])
     # makeScatterPlot_maxminsorting()
+
+    makehist_cancerpercentages("/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/5D_2016_05_23_cancer_for_nature_methods_essential.json")
