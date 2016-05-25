@@ -9,19 +9,14 @@ def addEdge(graph,reg):
     n = len(graph)
     startnode = getRandomInt(n)
     endnode = getRandomInt(n)
+    while endnode == startnode and endnode in graph[startnode]:
+        # exclude existing activating self-loops (can't switch sign)
+        startnode = getRandomInt(n)
+        endnode = getRandomInt(n)
     if endnode == startnode:
-        # self-loops are a special case
-        if endnode in graph[startnode]:
-            # if the self-loop exists, delete it
-            outedges = graph[startnode]
-            ind = outedges.index(endnode)
-            graph[startnode] = outedges[:ind]+outedges[ind+1:]
-            tempreg = reg[startnode]
-            reg[startnode] = tempreg[:ind]+tempreg[ind+1:]
-        else:
-            # otherwise add self-activation only (no self-repression allowed)
-            graph[startnode].append(endnode)
-            reg[startnode].append('a')
+        # add self-activation only (no self-repression allowed)
+        graph[startnode].append(endnode)
+        reg[startnode].append('a')
     elif endnode in graph[startnode]:
         # swap regulation if edge already exists
         ind = graph[startnode].index(endnode)
