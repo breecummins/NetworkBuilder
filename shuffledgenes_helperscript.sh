@@ -27,4 +27,5 @@ MATCHES=`cut -d " " -f 1 $OUTPUTDIR/Matches$NUM.txt | sort | uniq | wc -w`
 python summaryJSON.py $NETWORKFILE $PATTERNFILE $MATCHES $STABLEFCS $MULTISTABLE $NODES $RESULTSFILE
 
 # delete intermediate files
-rm $PATTERNFILE $NETWORKFILE "$OUTPUTDIR/Matches$NUM.txt" 
+rm $PATTERNFILE "$OUTPUTDIR/Matches$NUM.txt" 
+# rm $PATTERNFILE $NETWORKFILE "$OUTPUTDIR/Matches$NUM.txt" #need network file for subsequent pattern files
