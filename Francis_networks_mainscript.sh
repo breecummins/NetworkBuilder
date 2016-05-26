@@ -57,7 +57,6 @@ for NETWORKFILE in $( echo $INPUTDIR/* | xargs ls ); do
 
 	NETID=${BNAME%%.*}
 	NETID=${NETID##network}
-	echo $NETID
 
 	for PATTERNFILE in $( echo $PATTERNDIR/$NETID/* | xargs ls ); do
 		NUM="$NETID_${PATTERNFILE##pattern}"
