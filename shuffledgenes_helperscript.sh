@@ -15,10 +15,10 @@ STABLEFCS=$6
 MULTISTABLE=$7
 NODES=$8
 RESULTSFILE=$9
-
+StableFCList=$10
 
 # pattern match in stable FCs pattern 1
-mpiexec --mca mpi_preconnect_mpi 1 -np $NSLOTS -x LD_LIBRARY_PATH $PATTERNMATCH $NETWORKFILE $PATTERNFILE $OUTPUTDIR/StableFCList.txt $OUTPUTDIR/Matches_$NUM.txt > /dev/null
+mpiexec --mca mpi_preconnect_mpi 1 -np $NSLOTS -x LD_LIBRARY_PATH $PATTERNMATCH $NETWORKFILE $PATTERNFILE $StableFCList $OUTPUTDIR/Matches$NUM.txt > /dev/null
 
 # yank summary results
 MATCHES=`cut -d " " -f 1 $OUTPUTDIR/Matches$NUM.txt | sort | uniq | wc -w`

@@ -50,7 +50,7 @@ for NETWORKFILE in $( echo $INPUTDIR/* | xargs ls ); do
 		NODES=`dsgrn network $NETWORKFILE parameter | sed 's/[^0-9]*\([0-9]*\)[^0-9]*/\1/g'` # note: grep -o "[0-9]*" appears to be buggy on Mac OS X, hence the more complex sed expression instead
 
 		# remove intermediate files
-		rm "$OUTPUTDIR/StableFCList$RUNID.txt" "$OUTPUTDIR/MultistabilityList$RUNID.txt" "$DATABASEDIR/database$RUNID.db"
+		rm "$OUTPUTDIR/MultistabilityList$RUNID.txt" "$DATABASEDIR/database$RUNID.db"
 
 		RUNIDPREV=$RUNID
 	fi
@@ -62,7 +62,7 @@ for NETWORKFILE in $( echo $INPUTDIR/* | xargs ls ); do
 		NUM="$NETID_${PATTERNFILE##pattern}"
 		NUM=${NUM%%.*}
 		RESULTSFILE="$OUTPUTDIR/results$NUM.json"
-		qsub $HELPERSCRIPT $PATTERNMATCH $NETWORKFILE $PATTERNFILE $OUTPUTDIR $NUM $STABLEFCS $MULTISTABLE $NODES $RESULTSFILE
+		qsub $HELPERSCRIPT $PATTERNMATCH $NETWORKFILE $PATTERNFILE $OUTPUTDIR $NUM $STABLEFCS $MULTISTABLE $NODES $RESULTSFILE "$OUTPUTDIR/StableFCList$RUNID.txt"
 	done
 
 done
