@@ -26,7 +26,7 @@ mkdir -p $INPUTDIR/ $PATTERNDIR/ $DATABASEDIR/ $OUTPUTDIR/
 python $NETWORKBUILDER $NETWORKDIR $MAPPINGDIR $INPUTDIR $PATTERNDIR $TIMESERIES $TS_TYPE $TS_TRUNCATION $SCALING_FACTORS
 
 # use xargs since the number of files can be large
-RUNIDPREV = ""
+RUNIDPREV=""
 for NETWORKFILE in $( echo $INPUTDIR/* | xargs ls ); do
 	BNAME=`basename $NETWORKFILE`
 	RUNID=${BNAME%%_*}
@@ -57,7 +57,7 @@ for NETWORKFILE in $( echo $INPUTDIR/* | xargs ls ); do
 
 	NETID=${BNAME%%.*}
 	NETID=${NETID##network}
-	echo NETID
+	echo $NETID
 
 	for PATTERNFILE in $( echo $PATTERNDIR/$NETID/* | xargs ls ); do
 		NUM="$NETID_${PATTERNFILE##pattern}"
