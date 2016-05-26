@@ -16,10 +16,10 @@ SIGNATURES=$DSGRN/software/Signatures/bin/Signatures
 PATTERNMATCH=$DSGRN/software/PatternMatch/bin/PatternMatchDatabase
 
 DATETIME=`date +%Y_%m_%d_%H_%M_%S`
-INPUTDIR=./Francis/networks$DATETIME
-PATTERNDIR=./Francis/patterns$DATETIME
-DATABASEDIR=./Francis/databases$DATETIME
-OUTPUTDIR=./Francis/results$DATETIME
+INPUTDIR=./Francis$DATETIME/networks
+PATTERNDIR=./Francis$DATETIME/patterns
+DATABASEDIR=./Francis$DATETIME/databases
+OUTPUTDIR=./Francis$DATETIME/results
 
 mkdir -p $INPUTDIR/ $PATTERNDIR/ $DATABASEDIR/ $OUTPUTDIR/
 
@@ -29,7 +29,6 @@ python $NETWORKBUILDER $NETWORKDIR $MAPPINGDIR $INPUTDIR $PATTERNDIR $TIMESERIES
 RUNIDPREV = ""
 for NETWORKFILE in $( echo $INPUTDIR/* | xargs ls ); do
 	BNAME=`basename $NETWORKFILE`
-	NUM=$(echo $BNAME | sed -e s/[^0-9]//g);
 	RUNID=${BNAME%%_*}
 
 	if [[ "$RUNID" != "$RUNIDPREV" ]]; then
@@ -56,8 +55,9 @@ for NETWORKFILE in $( echo $INPUTDIR/* | xargs ls ); do
 		RUNIDPREV=$RUNID
 	fi
 
-	NETID=${BNAME##*_}
-	NETID=${NETID%%.*}
+	NETID=${BNAME%%.*}
+	NETID=${NETID##network}
+	echo NETID
 
 	for PATTERNFILE in $( echo $PATTERNDIR/$NETID/* | xargs ls ); do
 		NUM="$NETID_${PATTERNFILE##pattern}"
