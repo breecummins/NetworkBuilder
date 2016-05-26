@@ -21,10 +21,10 @@ RESULTSFILE=$9
 mpiexec --mca mpi_preconnect_mpi 1 -np $NSLOTS -x LD_LIBRARY_PATH $PATTERNMATCH $NETWORKFILE $PATTERNFILE $OUTPUTDIR/StableFCList.txt $OUTPUTDIR/Matches_$NUM.txt > /dev/null
 
 # yank summary results
-MATCHES=`cut -d " " -f 1 $OUTPUTDIR/Matches_$NUM.txt | sort | uniq | wc -w`
+MATCHES=`cut -d " " -f 1 $OUTPUTDIR/Matches$NUM.txt | sort | uniq | wc -w`
 
 # dump inputs and results to json
 python summaryJSON.py $NETWORKFILE $PATTERNFILE $MATCHES $STABLEFCS $MULTISTABLE $NODES $RESULTSFILE
 
 # delete intermediate files
-rm $PATTERNFILE $NETWORKFILE "$OUTPUTDIR/Matches_$NUM.txt" 
+rm $PATTERNFILE $NETWORKFILE "$OUTPUTDIR/Matches$NUM.txt" 

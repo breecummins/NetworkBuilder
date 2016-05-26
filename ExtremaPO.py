@@ -283,7 +283,6 @@ def PullEventComps(sumList,maxEps,step,n):
 		for event in range(0,2*n):
 			eventCompList[ndx].append(tsList[0][maxEps][tsList[1][event]])
 		ndx += 1
-	print eventCompList
 	return eventCompList
 
 # Build partial order list indexed by epsilon. Each PO is a list indexed by 1st ts highest min, 1st ts highest max, 
@@ -433,8 +432,6 @@ def makeJSONstring(dataFileName,fileType,labels,timeCutOff=-1,n=1,scalingFactor=
 	elif fileType == 'row':
 		TSList,TSLabels,timeStepList = ParseRowFile(dataFileName)
 
-	print timeStepList[:timeCutOff]
-
 	newTSLabels = labels
 	newTSList = PickNetworkTS(TSList,TSLabels,newTSLabels)
 
@@ -446,7 +443,6 @@ def makeJSONstring(dataFileName,fileType,labels,timeCutOff=-1,n=1,scalingFactor=
 	maxEps = FindMaxEps(sumList)
 	if scalingFactor >= 0 and scalingFactor < 1:
 		maxEps = int(scalingFactor*maxEps)
-	print maxEps
 	eventCompList = PullEventComps(sumList,maxEps,step,n)
 	# print eventCompList
 	# print "\n"
