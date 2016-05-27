@@ -31,7 +31,7 @@ for NETWORKFILE in $( echo $INPUTDIR/* | xargs ls ); do
 	BNAME=`basename $NETWORKFILE`
 	RUNID=${BNAME%%_*}
 	RUNID=${RUNID##network}
-	if ! [[ ${RUNIDPREV[@]} =~ "$RUNID" ]]; then
+	if ! [[ ${RUNIDPREV[@]} =~ (^| )"$RUNID"($| ) ]]; then
 		# only run database if it hasn't been done for this network isomorphism
 		DATABASENAME="$DATABASEDIR/database$RUNID.db";
 
