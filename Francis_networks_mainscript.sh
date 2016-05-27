@@ -26,43 +26,57 @@ mkdir -p $INPUTDIR/ $PATTERNDIR/ $DATABASEDIR/ $OUTPUTDIR/
 python $NETWORKBUILDER $NETWORKDIR $MAPPINGDIR $INPUTDIR $PATTERNDIR $TIMESERIES $TS_TYPE $TS_TRUNCATION $SCALING_FACTORS
 
 # use xargs since the number of files can be large
-RUNIDPREV=""
+RUNIDPREV=()
 for NETWORKFILE in $( echo $INPUTDIR/* | xargs ls ); do
 	BNAME=`basename $NETWORKFILE`
 	RUNID=${BNAME%%_*}
-
-	if [[ "$RUNID" != "$RUNIDPREV" ]]; then
+	RUNID=${RUNID##network}
+	if ! [[ ${RUNIDPREV[@]} =~ "$RUNID" ]]; then
 		# only run database if it hasn't been done for this network isomorphism
 		DATABASENAME="$DATABASEDIR/database$RUNID.db";
 
 		# make database
 		mpiexec --mca mpi_preconnect_mpi 1 -np 8 -x LD_LIBRARY_PATH $SIGNATURES $NETWORKFILE $DATABASENAME
+		# mpiexec --mca mpi_preconnect_mpi 1 -np 4 $SIGNATURES $NETWORKFILE $DATABASENAME
 
 		# search for stable FCs
-		sqlite3 -separator " " $DATABASENAME 'select ParameterIndex, Vertex from Signatures natural join (select MorseGraphIndex,Vertex from (select MorseGraphIndex,Vertex from MorseGraphAnnotations where Label="FC" except select MorseGraphIndex,Source from MorseGraphEdges));' > $OUTPUTDIR/StableFCList$RUNID.txt
+		sqlite3 -separator " " $DATABASENAME 'select ParameterIndex, Vertex from Signatures natural join (select MorseGraphIndex,Vertex from (select MorseGraphIndex,Vertex from MorseGraphAnnotations where Label="FC" except select MorseGraphIndex,Source from MorseGraphEdges));' > $DATABASEDIR/StableFCList$RUNID.txt
 
 		# search for multistability
-		sqlite3 -separator " " $DATABASENAME 'select count(*) from Signatures natural join (select MorseGraphIndex from (select MorseGraphIndex, count(*) as numMinimal from (select MorseGraphIndex,Vertex from MorseGraphVertices except select MorseGraphIndex,Source from MorseGraphEdges) group by MorseGraphIndex) where numMinimal > 1);'  > $OUTPUTDIR/MultistabilityList$RUNID.txt
+		sqlite3 -separator " " $DATABASENAME 'select count(*) from Signatures natural join (select MorseGraphIndex from (select MorseGraphIndex, count(*) as numMinimal from (select MorseGraphIndex,Vertex from MorseGraphVertices except select MorseGraphIndex,Source from MorseGraphEdges) group by MorseGraphIndex) where numMinimal > 1);'  > $DATABASEDIR/MultistabilityList$RUNID.txt
 
-		# get totals
-		STABLEFCS=`cut -d " " -f 1 $OUTPUTDIR/StableFCList$RUNID.txt | sort | uniq | wc -w`
-		MULTISTABLE=`cat $OUTPUTDIR/MultistabilityList$RUNID.txt  | tr -d "\n"`
-		NODES=`dsgrn network $NETWORKFILE parameter | sed 's/[^0-9]*\([0-9]*\)[^0-9]*/\1/g'` # note: grep -o "[0-9]*" appears to be buggy on Mac OS X, hence the more complex sed expression instead
+		# remove database
+		rm "$DATABASEDIR/database$RUNID.db"
 
-		# remove intermediate files
-		rm "$OUTPUTDIR/MultistabilityList$RUNID.txt" "$DATABASEDIR/database$RUNID.db"
-
-		RUNIDPREV=$RUNID
+		RUNIDPREV+=($RUNID)
+		# echo ${RUNIDPREV[@]}
 	fi
+done
 
+for NETWORKFILE in $( echo $INPUTDIR/* | xargs ls ); do
+	BNAME=`basename $NETWORKFILE`
+	RUNID=${BNAME%%_*}
+	RUNID=${RUNID##network}
 	NETID=${BNAME%%.*}
 	NETID=${NETID##network}
 
 	for PATTERNFILE in $( echo $PATTERNDIR/$NETID/* | xargs ls ); do
-		NUM="$NETID_${PATTERNFILE##pattern}"
+		P=`basename $PATTERNFILE`
+		NUM="$NETID${P##pattern}"
 		NUM=${NUM%%.*}
 		RESULTSFILE="$OUTPUTDIR/results$NUM.json"
-		qsub $HELPERSCRIPT $PATTERNMATCH $NETWORKFILE $PATTERNFILE $OUTPUTDIR $NUM $STABLEFCS $MULTISTABLE $NODES $RESULTSFILE "$OUTPUTDIR/StableFCList$RUNID.txt"
+		mpiexec --mca mpi_preconnect_mpi 1 -np 16 -x LD_LIBRARY_PATH $PATTERNMATCH $NETWORKFILE $PATTERNFILE $DATABASEDIR/StableFCList$RUNID.txt $DATABASEDIR/Matches$NUM.txt > /dev/null
+		# yank summary results
+		STABLEFCS=`cut -d " " -f 1 $DATABASEDIR/StableFCList$RUNID.txt | sort | uniq | wc -w`
+		MULTISTABLE=`cat $DATABASEDIR/MultistabilityList$RUNID.txt  | tr -d "\n"`
+		NODES=`dsgrn network $NETWORKFILE parameter | sed 's/[^0-9]*\([0-9]*\)[^0-9]*/\1/g'` # note: grep -o "[0-9]*" appears to be buggy on Mac OS X, hence the more complex sed expression instead
+		MATCHES=`cut -d " " -f 1 $DATABASEDIR/Matches$NUM.txt | sort | uniq | wc -w`
+		# dump inputs and results to json
+		python summaryJSON.py $NETWORKFILE $PATTERNFILE $MATCHES $STABLEFCS $MULTISTABLE $NODES $RESULTSFILE
+		# delete intermediate files
+		rm $PATTERNFILE "$DATABASEDIR/Matches$NUM.txt" 
+
+		# qsub $HELPERSCRIPT $PATTERNMATCH $NETWORKFILE $PATTERNFILE $OUTPUTDIR $NUM $STABLEFCS $MULTISTABLE $NODES $RESULTSFILE "$OUTPUTDIR/StableFCList$RUNID.txt"
 	done
 
 done
