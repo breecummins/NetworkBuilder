@@ -33,7 +33,7 @@ def ParseRowFile(fileName,node_list=None):
                             node_list.remove(name)
             if node_list == [] or N == numlines:
                 break
-    return TSList,TSLabels, timeStepList
+    return TSList,TSLabels,timeStepList
 
 # Truncate timeseries. Keep all data before timeCutOff
 def TruncateTS(newTSList,timeStepList,timeCutOff):
@@ -99,6 +99,7 @@ def makeNetworks(timeseries_file,ts_type,ts_truncation,network_spec,rankedgenes=
     candidates = binMaxMinData(MaxMinData,network_node_list)
     print candidates
     print "\n"
+    return None
     networks = [network_spec]
     # make all substitutions
     for substitution in itertools.product(*candidates):
@@ -148,7 +149,9 @@ if __name__ == "__main__":
     with open(network_spec_file,'r') as f:
         network_spec = f.read()  
 
-    makeNetworks(timeseries_file,ts_type,ts_truncation,network_spec,rankedgenes,scalingFactors,INPUTDIR)
+    # makeNetworks(timeseries_file,ts_type,ts_truncation,network_spec,rankedgenes,scalingFactors,INPUTDIR)
+    # makeNetworks(timeseries_file,ts_type,ts_truncation,network_spec,rankedgenes[:50],scalingFactors,INPUTDIR)
+    makeNetworks(timeseries_file,ts_type,ts_truncation,network_spec,rankedgenes[:25],scalingFactors,INPUTDIR)
 
     # NETWORKFILE="/Users/bcummins/GIT/DSGRN/networks/11D_2016_04_18_malaria40hrDuke_90TF_essential.txt"
     # RANKEDGENES="datafiles/wrair-fpkm-p1_malaria_s19_DLxJTK_90putativeTFs.txt"

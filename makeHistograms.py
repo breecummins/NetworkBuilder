@@ -165,7 +165,28 @@ def makehist_cancerpercentages(fname='results.json'):
     plotHist(percentQ,"% state Q without P","",percentQ[0]*100)
     plotHist(percentBi,"% state P and Q","",percentBi[0]*100)
 
-
+def analyzeFrancisnetworks(fname='FrancisScalingFactor0_00.txt',savename='FrancisScalingFactor0_00_stats.txt'):
+    results=[]
+    with open(fname,'r') as f:
+        for k,l in enumerate(f.readlines()):
+            if not k%2:
+                path=l.split('/')
+                nums=path[-1].replace('.','_').split('_')
+                identifier=' '.join([nums[0],nums[1]])
+            else:
+                j = json.loads(l)
+                params = j["ParameterCount"]
+                stablefcs = j["StableFCParameterCount"]
+                matches = j["StableFCMatchesParameterCount"]
+                r=tuple([float(matches)/float(params),matches,stablefcs, params, identifier])
+                print r
+                results.append(r)
+    results = sorted(results,reverse=True) # sort by percent matches, followed by number matches, followed by stable FCs, followed by number parameters
+    with open(savename,'w') as s:
+        s.write('Identifier: % matches, # matches, # stable FCs, # parameters\n')
+        for r in results:
+            mystr='\t{:0.2f} \t{} \t{} \t{}'.format(*r[:-1])
+            s.write(r[-1]+': '+mystr+"\n")
 
 if __name__ == "__main__":
     # EXAMPLE INPUTS FOR HISTOGRAM: 
@@ -180,4 +201,6 @@ if __name__ == "__main__":
     # makeHistogram_multistable(sys.argv[1])
     # makeScatterPlot_maxminsorting()
 
-    makehist_cancerpercentages("/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/5D_2016_05_24_cancer_for_nature_methods_withRb_essential.json")
+    # makehist_cancerpercentages("/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/5D_2016_05_24_cancer_for_nature_methods_withRb_essential.json")
+
+    analyzeFrancisnetworks(fname='/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/Francisresults016_05_27_16_42_44/FrancisScaling0_00.txt',savename='/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/Francisresults016_05_27_16_42_44/FrancisScalingFactor0_00_stats.txt')
