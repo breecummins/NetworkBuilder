@@ -203,4 +203,9 @@ if __name__ == "__main__":
 
     # makehist_cancerpercentages("/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/5D_2016_05_24_cancer_for_nature_methods_withRb_essential.json")
 
-    analyzeFrancisnetworks(fname='/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/Francisresults016_05_27_16_42_44/FrancisScaling0_00.txt',savename='/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/Francisresults016_05_27_16_42_44/FrancisScalingFactor0_00_stats.txt')
+    # fname='/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/Francisresults016_05_27_16_42_44/FrancisScaling0_00.txt'
+    # savename='/Users/bcummins/patternmatch_helper_files/patternmatch_archived_results/Francisresults016_05_27_16_42_44/FrancisScalingFactor0_00_stats.txt'
+    fname=r"/Users/bree/Box Sync/DataForNetworkBuilder/patternmatch_helper_files/patternmatch_archived_results/Francisresults016_05_27_16_42_44/FrancisScaling0_15.txt"
+    savename=r"/Users/bree/Box Sync/DataForNetworkBuilder/patternmatch_helper_files/patternmatch_archived_results/Francisresults016_05_27_16_42_44/FrancisScalingFactor0_15_stats.txt"
+
+    analyzeFrancisnetworks(fname, savename)
