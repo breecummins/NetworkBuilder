@@ -179,7 +179,7 @@ def analyzeFrancisnetworks(fname='FrancisScalingFactor0_00.txt',savename='Franci
                 stablefcs = j["StableFCParameterCount"]
                 matches = j["StableFCMatchesParameterCount"]
                 r=tuple([float(matches)/float(params),matches,stablefcs, params, identifier])
-                print r
+                # print r
                 results.append(r)
     results = sorted(results,reverse=True) # sort by percent matches, followed by number matches, followed by stable FCs, followed by number parameters
     with open(savename,'w') as s:
